@@ -5,6 +5,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
+using Unity.Transforms;
 using UnityEngine;
 
 
@@ -67,6 +68,18 @@ public struct AnotherJob : IJob
         {
             numbers[0] += numbers[i];
         }
+    }
+}
+
+[BurstCompile]
+public struct IJObEntitiess : IJobEntity
+{
+    public float time; 
+    public void Execute(Translation trans)
+    {
+        var pos = trans.Value;
+        trans.Value = new float3(pos.x, math.PI * math.sin(pos.x + pos.z + time), pos.z) ;
+
     }
 }
 

@@ -14,19 +14,23 @@ public partial class WaveMoveSystem : SystemBase
 
     protected override void OnUpdate()
     {
-        var elapsedTime = Time.ElapsedTime;
+        var elapsedTime = (float)Time.ElapsedTime;
 
-        Entities.ForEach(
-            (Entity entity, ref Translation trans, ref Rotation rot, in WaveDataComponent waveData) =>
-            {
-                var waveMovement = waveData.amplitude * math.sin((float)elapsedTime * waveData.frequency) + trans.Value.y;
-                trans.Value = new float3(trans.Value.x, waveMovement, trans.Value.z);
-                //EntityManager.RemoveComponent<WaveDataComponent>(entity);
-
-            
-
-            }).ScheduleParallel();
-
-       
+        var sinMovementJob = new SinMovementJob
+        {
+            elapsedTime = elapsedTime
+        };
+        sinMovementJob.ScheduleParallel();
     }
 }
+
+public partial struct SinMovementJob : IJobEntity
+{
+    public float elapsedTime;
+    public void Execute(ref Translation trans, in WaveDataComponent waveData)
+    {
+        var waveMovement = waveData.amplitude * math.sin(elapsedTime * waveData.frequency) + trans.Value.y;
+        trans.Value = new float3(trans.Value.x, waveMovement, trans.Value.z);
+    }
+}
+
