@@ -21,6 +21,8 @@ public partial class WaveMoveSystem : SystemBase
             elapsedTime = elapsedTime
         };
         sinMovementJob.ScheduleParallel();
+        
+        
     }
 }
 

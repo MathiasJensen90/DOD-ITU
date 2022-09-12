@@ -4,7 +4,7 @@ using Unity.Entities;
 using UnityEngine;
 
 [GenerateAuthoringComponent]
-public struct RotateComp_Hello : IComponentData
+public struct RotateSpeed : IComponentData
 {
-    public float speed;
+    public float value;
 }

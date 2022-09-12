@@ -82,13 +82,3 @@ public struct IJObEntitiess : IJobEntity
 
     }
 }
-
-
-
-
-//Ijob
-// Dependencies and complex computations
-//IjobFor
-//
-//IJobEntityBatch
-//IJobEntityBatchWithIndex

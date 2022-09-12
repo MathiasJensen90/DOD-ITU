@@ -13,8 +13,8 @@ public class SingletonComponent2Authoring : MonoBehaviour, IConvertGameObjectToE
     {
         dstManager.AddComponentData(entity, new SingletonComponent2
         {
-            firstname = this.firstName,
-            lastName = this.lastName
+            firstname = firstName,
+            lastName = lastName
         });
     }
 }

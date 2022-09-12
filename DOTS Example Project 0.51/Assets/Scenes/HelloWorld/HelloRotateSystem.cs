@@ -12,10 +12,10 @@ public partial class HelloRotateSystem : SystemBase
     {
         float dt = Time.DeltaTime;
         
-        Entities.ForEach((ref Rotation rot, in Translation trans, in RotateComp_Hello rotateComp ) =>
+        Entities.ForEach((ref Rotation rot, in Translation trans, in RotateSpeed rotateComp ) =>
         {
             
-            var xRot = quaternion.RotateX( rotateComp.speed * Mathf.Deg2Rad * dt);
+            var xRot = quaternion.RotateX( rotateComp.value * Mathf.Deg2Rad * dt);
             
             rot.Value = math.mul(rot.Value, xRot);
 

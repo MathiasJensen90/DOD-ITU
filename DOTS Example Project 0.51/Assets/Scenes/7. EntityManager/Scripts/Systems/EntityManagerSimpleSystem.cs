@@ -17,8 +17,6 @@ using UnityEngine;
            
            Entities.ForEach((Entity entity, ref Translation trans, ref EntityManagerSingletonComponent singletonComp, in PlayerInputComponent input) =>
            {
-         
-               
                if (input.input1Value)
                {
                    EntityManager.RemoveComponent<RotateTag>(entity);

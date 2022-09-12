@@ -16,18 +16,11 @@ public partial class QueriesExamplesSystem : SystemBase
     protected override void OnUpdate()
     {
 
+        //NativeArray<int> myArray = new NativeArray<int>(100, World.UpdateAllocator.ToAllocator);
+
         EntityQuery newEntityquery = GetEntityQuery(ComponentType.ReadOnly<HeroTag>());
-
-        var allHeroEntites = newEntityquery.ToEntityArray(Allocator.TempJob);
-        var oneEntity = allHeroEntites[0];
-        var oneHero = GetSingletonEntity<HeroTag>();
-
-        var c = GetSingleton<RotateTag>(); 
-        
-        
-
-
         float dt = Time.DeltaTime;
+        
         //this query is the same as the one below it
         EntityQuery query = GetEntityQuery(ComponentType.ReadWrite<Translation>(), ComponentType.ReadOnly<Rotation>());
 
@@ -40,7 +33,7 @@ public partial class QueriesExamplesSystem : SystemBase
         
         EntityQuery query2 = GetEntityQuery(ComponentType.ReadOnly<TagComponent1>(), ComponentType.ReadOnly<TagComponent2>(), ComponentType.ReadOnly<RotateTag>());
         
-        Entities.WithAll<TagComponent1, TagComponent2>().ForEach(( Entity entity, ref Rotation rotation) =>
+        Entities.WithAll<TagComponent1, TagComponent2>().ForEach(( ref Rotation rotation) =>
         {
             var xRot = quaternion.RotateX(80 * Mathf.Deg2Rad * dt);
             rotation.Value = math.mul(rotation.Value, xRot);
@@ -49,7 +42,6 @@ public partial class QueriesExamplesSystem : SystemBase
         
         EntityQuery query3 = GetEntityQuery(ComponentType.Exclude<TagComponent1>(), ComponentType.ReadOnly<TagComponent2>());
         
-        //if we don not use WithNone, then we would also affect the same entities a the above query
         Entities.WithAll<TagComponent2>().WithNone<TagComponent1>().ForEach((ref Rotation rotation) =>
         {
             var xRot = quaternion.RotateY(80 * Mathf.Deg2Rad * dt);
