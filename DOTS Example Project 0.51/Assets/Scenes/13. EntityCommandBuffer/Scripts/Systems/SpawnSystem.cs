@@ -27,14 +27,12 @@ public partial class SpawnSystem : SystemBase
        Entities.ForEach((Entity entity, in ECBSingletonComponent ecbSingleton) =>
         {
             
-            
             for (int i = 0; i < ecbSingleton.spawnAmount; i++)
             {
                 for (int j = 0; j < ecbSingleton.spawnAmount; j++)
                 {
                     var e = ecb.Instantiate(ecbSingleton.prefabTospawn);
                     ecb.AddComponent(e, new Translation {Value = new float3(i * 2, 0, j * 2)});
-                    //EntityManager.AddComponentData(e, new Translation {Value = new float3(i * 2, 0, j * 2)});
                 }
             }
         }).Schedule();

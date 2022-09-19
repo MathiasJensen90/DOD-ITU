@@ -31,8 +31,7 @@ public partial class ECBStopRotationSystem : SystemBase
             ecb = ecb
         }.Schedule(job);
         
-        
-       job2.Complete();
+        job2.Complete();
        
         ecb.Playback(EntityManager);
         ecb.Dispose();
