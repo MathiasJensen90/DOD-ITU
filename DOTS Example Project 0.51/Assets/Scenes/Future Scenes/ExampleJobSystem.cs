@@ -30,8 +30,7 @@ public partial class ExampleJobSystems : SystemBase
         {
             numbers = nums,
         };
-        
-        
+
         JobHandle handle = firstJob.Schedule();
         JobHandle handle2 = secondJob.Schedule(handle);
 

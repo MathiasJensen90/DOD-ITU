@@ -8,6 +8,7 @@ using Unity.Transforms;
 using UnityEngine;
 
 
+[DisableAutoCreation]
 public partial class IjobEntityBatchExample : SystemBase
 {
     
