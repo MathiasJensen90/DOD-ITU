@@ -4,9 +4,8 @@ using Unity.Entities;
 using Unity.Jobs;
 using UnityEngine;
 
-[UpdateAfter(typeof(FirstSystem))]
-//[UpdateInGroup(typeof(InitializationSystemGroup))]
-public partial class SecondSystem : SystemBase
+[UpdateAfter(typeof(ApplyDamageSystem))]
+public partial class ResolveDamageSystem : SystemBase
 {
     private BeginInitializationEntityCommandBufferSystem ecbSystem; 
     protected override void OnCreate()
@@ -38,11 +37,12 @@ public partial class SecondSystem : SystemBase
             if (enemyComponent.takingDamageColdown <= 0)
             {
                 enemyComponent.takingDamageColdown = 4; 
-                EntityManager.RemoveComponent<CooldownTag>( entity);
-                EntityManager.RemoveComponent<TookDamage>( entity);
+                EntityManager.RemoveComponent<CooldownTag>(entity);
+                EntityManager.RemoveComponent<TookDamage>(entity);
             }
         }).WithStructuralChanges().Run();
         
+         // TO DO Show better version of doing this without sttructural changes
 
         
 

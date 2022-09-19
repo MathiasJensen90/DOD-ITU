@@ -7,7 +7,7 @@ using UnityEngine;
 public struct DependencySingletonComponent : IComponentData
 {
    public float radius;
+   public int damage;
    public float distance;
-   public int damage; 
    public Entity targetEntity;
 }

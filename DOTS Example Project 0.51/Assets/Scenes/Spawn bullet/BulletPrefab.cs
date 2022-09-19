@@ -4,7 +4,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 
 [GenerateAuthoringComponent]
-public struct WialiamTag : IComponentData
+public struct bulletPrefab : IComponentData
 {
    public Entity prefabTospawn;
    

@@ -6,7 +6,7 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
-public partial class FirstSystem : SystemBase
+public partial class ApplyDamageSystem : SystemBase
 {
     
     protected override void OnUpdate()
@@ -17,19 +17,17 @@ public partial class FirstSystem : SystemBase
 
         Entities.ForEach((ref DependencySingletonComponent singletonComp, in Translation trans) =>
         {
-
             #region EntitymangagerCheck
             
             if (!EntityManager.Exists(singletonComp.targetEntity)) return;
             
-            
             if (HasComponent<Translation>(singletonComp.targetEntity))
                 {
                      float3 targetEntityPos = GetComponent<Translation>(singletonComp.targetEntity).Value;
+                     //float3 targetEntityPos = allTransforms[singletonComp.targetEntity].Value; 
                      singletonComp.distance = math.distance(trans.Value, targetEntityPos);
                      
                      //This is just for visualisation of range.
-                     Debug.DrawRay(trans.Value, targetEntityPos, singletonComp.distance < singletonComp.radius ? Color.red : Color.blue);
                      Debug.DrawRay(trans.Value, math.normalizesafe(targetEntityPos) * singletonComp.radius, singletonComp.distance < singletonComp.radius ? Color.red : Color.magenta);
                 }
             #endregion
@@ -42,8 +40,11 @@ public partial class FirstSystem : SystemBase
             //     {
             //         var targetEntityPos = GetComponent<Translation>(singletonComp.targetEntity).Value;
             //         singletonComp.distance = math.distance(trans.Value, targetEntityPos);
+            //         
+            //         Debug.DrawRay(trans.Value, targetEntityPos, singletonComp.distance < singletonComp.radius ? Color.red : Color.blue);
+            //         Debug.DrawRay(trans.Value, math.normalizesafe(targetEntityPos) * singletonComp.radius, singletonComp.distance < singletonComp.radius ? Color.red : Color.magenta);
             //     }
-            //     
+                
             #endregion
 
             #region CompondataFromEntityCheck
@@ -57,12 +58,15 @@ public partial class FirstSystem : SystemBase
          
         }).WithoutBurst().Run();
         
+        
+        //make a IJobEntityVersion
+        
+        
 
         Entities.ForEach((Entity entity, in DependencySingletonComponent singletonComp) =>
         {
             var enemyEntity = singletonComp.targetEntity;
             if (!storage.Exists(enemyEntity)) return;
-           
             
                 if (singletonComp.distance < singletonComp.radius || Input.GetKeyDown(KeyCode.Space))
                 {
