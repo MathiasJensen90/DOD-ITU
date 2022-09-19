@@ -26,7 +26,7 @@ public partial class QueriesExamplesSystem : SystemBase
 
         Entities.ForEach((ref Translation translation, in Rotation rotation) =>
         {
-            translation.Value += dt * new float3(0, 0.1f, 0);
+            translation.Value += dt * new float3(0, 0.4f, 0);
 
         }).Schedule();
 

@@ -14,6 +14,8 @@ using UnityEngine;
         {
            var singleton = GetSingleton<EntityManagerSingletonComponent>();
            if (singleton.ExampleType != EntityManagerExample.Simple) return;
+
+          
            
            Entities.ForEach((Entity entity, ref Translation trans, ref EntityManagerSingletonComponent singletonComp, in PlayerInputComponent input) =>
            {
