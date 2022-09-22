@@ -7,6 +7,7 @@ using Unity.Transforms;
 public partial class ReadWriteExample : SystemBase{
     protected override void OnUpdate()
     {
+        
         Entities.ForEach((in Translation trans, in ReadWriteComp readWriteComp) =>
         {
             Entity entityRef = readWriteComp.entityRef;

@@ -24,7 +24,7 @@ using UnityEngine;
                 if (stopRot.timer >= elapsedTime) return;
                 ecb.DestroyEntity(entityInQueryIndex, entity);
 
-            }).ScheduleParallel();
+            }).Schedule();
             
             ecbSystem.AddJobHandleForProducer(Dependency);
         }

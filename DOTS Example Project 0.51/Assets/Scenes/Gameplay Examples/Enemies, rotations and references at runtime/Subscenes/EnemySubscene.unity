@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chaser: {fileID: 2131819795274963635, guid: 445f21e34a41bc843ab0d25ff93e2c93, type: 3}
-  timer: 2
+  timer: 0.27
   timerDelay: 0.79
   random:
     state: 73

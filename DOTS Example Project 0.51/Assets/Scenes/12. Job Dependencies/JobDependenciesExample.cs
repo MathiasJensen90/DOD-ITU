@@ -21,7 +21,7 @@ public partial class JobDependenciesExample : SystemBase
         JobHandle DHandle = jobD.Schedule(CHandle);
         
         
-        AHandle.Complete();
+        DHandle.Complete();
         
 
         #endregion

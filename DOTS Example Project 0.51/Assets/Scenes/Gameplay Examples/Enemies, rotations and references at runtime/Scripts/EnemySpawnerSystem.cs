@@ -15,8 +15,7 @@ public partial class EnemySpawnerSystem : SystemBase
     protected override void OnUpdate()
     {
         var dt = Time.DeltaTime;
-        var elapsedTime = (uint)Time.ElapsedTime;
-        
+
         Entities.ForEach((Entity entity, ref ChaserSpawner chaserSpawn, in Translation trans) =>
         {
             chaserSpawn.timer -= dt;
@@ -37,7 +36,6 @@ public partial class EnemySpawnerSystem : SystemBase
                     rotationSpeed = chaserSpawn.random.NextFloat(.3f, .7f)
                 });
             }
-
         }).WithStructuralChanges().Run();
     }
 }

@@ -41,6 +41,5 @@ public partial class SpawnSystem : SystemBase
         Dependency.Complete();
         ecb.Playback(EntityManager);
         ecb.Dispose();
-
     }
 }

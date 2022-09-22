@@ -24,13 +24,13 @@ public partial class IJobEntityExample : SystemBase
         
         rotationJobhandle.Complete();
 
-        #region EFE
+        // #region EFE
         // Entities.ForEach((ref Rotation rot, in JobentityData jobentityData) =>
         // {
         //     rot.Value = math.mul(math.normalize(rot.Value),
         //         quaternion.AxisAngle(math.up(), math.radians(jobentityData.rotationValue) * deltaTime));
         // }).Schedule();
-        #endregion
+        // #endregion
     }
 }
 
