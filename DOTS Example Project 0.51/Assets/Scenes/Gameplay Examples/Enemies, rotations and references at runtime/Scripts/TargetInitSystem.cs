@@ -57,3 +57,15 @@ using UnityEngine;
             // allEnemyEntities.Dispose();
         }
     }
+
+
+
+public partial struct AddTargetBufferToTowers : IJobEntity
+{
+    public EntityCommandBuffer ecb;
+    public void Execute(Entity entity)
+    {
+        
+    }
+    
+}

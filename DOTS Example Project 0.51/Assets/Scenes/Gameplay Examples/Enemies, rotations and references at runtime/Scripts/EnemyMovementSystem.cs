@@ -11,10 +11,30 @@ public partial class EneemyMovementSystem : SystemBase
     protected override void OnUpdate()
     {
         float dt = Time.DeltaTime;
-        Entities.WithAll<ChaserTag>().ForEach((ref Translation translation, in Rotation rot, in moveData moveData) =>
+
+        var enemyMovementJob = new EnemyMovementJob
         {
-            float3 forwardDir = math.forward(rot.Value);
-            translation.Value +=  forwardDir * moveData.moveSpeed * dt;
-        }).ScheduleParallel();
+            dt = dt
+        }.Schedule();
+        
+        enemyMovementJob.Complete();
+        
+        /*Entities.WithAll<ChaserTag>().ForEach((ref Translation translation, in Rotation rot, in moveData moveData) =>
+         {
+             float3 forwardDir = math.forward(rot.Value);
+             translation.Value +=  forwardDir * moveData.moveSpeed * dt;
+         }).ScheduleParallel();
+         */
+    }
+}
+
+[WithAll(typeof(ChaserTag))]
+public partial struct EnemyMovementJob : IJobEntity
+{
+    public float dt; 
+    public void Execute(ref Translation translation, in Rotation rot, in moveData moveData)
+    {
+        float3 forwardDir = math.forward(rot.Value);
+        translation.Value +=  forwardDir * moveData.moveSpeed * dt;
     }
 }
