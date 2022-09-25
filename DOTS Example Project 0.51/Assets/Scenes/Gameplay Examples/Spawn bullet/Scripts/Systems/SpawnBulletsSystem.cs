@@ -14,7 +14,7 @@ public partial class SpawnBulletsSystem : SystemBase
         var input = Input.GetKey(KeyCode.Mouse0);
         EntityCommandBuffer ecb = new EntityCommandBuffer(World.UpdateAllocator.ToAllocator);
 
-        var spawnBulletJob = new SpawnBulletJob
+        var spawnBulletJob = new  SpawnBulletJob
         {
             ecb = ecb,
             mousePos = mousePos,
@@ -22,24 +22,7 @@ public partial class SpawnBulletsSystem : SystemBase
         }.Schedule();
         
         spawnBulletJob.Complete();
-
-        // Entities.ForEach((Entity enitty, in Translation trans, in bulletPrefab bulletPrefab) =>
-         // {
-         //     if (input)
-         //     {
-         //         var dir = math.normalize(mousePos.xy - trans.Value.xy);
-         //         var e = EntityManager.Instantiate(bulletPrefab.prefabTospawn);
-         //         EntityManager.SetComponentData(e, new Translation
-         //         {
-         //             Value = trans.Value + new float3(dir.x, dir.y, 0) * 3
-         //         });
-         //         var targetRot = quaternion.LookRotationSafe(new float3(dir.x, dir.y, 0), math.up());
-         //         EntityManager.SetComponentData(e, new Rotation
-         //         {
-         //             Value = targetRot
-         //         });
-         //     }
-         // }).WithStructuralChanges().Run();
+        ecb.Playback(EntityManager);
     }
 }
 
@@ -50,10 +33,12 @@ public partial struct SpawnBulletJob : IJobEntity
     public bool input;
     public EntityCommandBuffer ecb; 
     
-    public void Execute(Entity enitty, in Translation trans, in bulletPrefab bulletPrefab)
+    public void Execute(in Translation trans, in Shooter bulletPrefab)
     {
+        Debug.Log("happening");
         if (input)
         {
+            Debug.Log("shoot");
             var dir = math.normalize(mousePos.xy - trans.Value.xy);
             var e = ecb.Instantiate(bulletPrefab.prefabTospawn);
             ecb.SetComponent(e, new Translation

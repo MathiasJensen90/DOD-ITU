@@ -4,7 +4,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 
 [GenerateAuthoringComponent]
-public struct bulletPrefab : IComponentData
+public struct Shooter : IComponentData
 {
    public Entity prefabTospawn;
    
