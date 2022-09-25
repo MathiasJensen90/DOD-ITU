@@ -48,7 +48,6 @@ public partial class EnemySpawnerSystem : SystemBase
          */
         
         ecb.Playback(EntityManager);
-        ecb.Dispose();
     }
 }
 
