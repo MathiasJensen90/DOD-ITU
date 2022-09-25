@@ -42,11 +42,6 @@ public struct ColissionJob : ICollisionEventsJob
         Entity entityA = collisionEvent.EntityA;
         Entity entityB = collisionEvent.EntityB;
 
-        bool EntityAIsPlayer = allPlayer.HasComponent(entityA);
-        bool EntityBIsPlatform = allJumpingPlatforms.HasComponent(entityB);
-
-        if (EntityAIsPlayer && !EntityBIsPlatform || EntityBIsPlatform && !EntityAIsPlayer) return;
-
         if (allJumpingPlatforms.HasComponent(entityA) && allPlayer.HasComponent(entityB))
         {
             PhysicsVelocity physVelocity = allPhysicsVelocity[entityA];
