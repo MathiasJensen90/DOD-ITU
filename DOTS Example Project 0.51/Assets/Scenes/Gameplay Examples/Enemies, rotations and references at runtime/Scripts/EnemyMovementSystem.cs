@@ -29,6 +29,7 @@ public partial class EneemyMovementSystem : SystemBase
 }
 
 [WithAll(typeof(ChaserTag))]
+[BurstCompile]
 public partial struct EnemyMovementJob : IJobEntity
 {
     public float dt; 

@@ -34,8 +34,7 @@ public partial class FaceTargetSystem : SystemBase
 
         }).ScheduleParallel();
         */
-
-
+       
        var rotateTowardsNearestTargetJob = new RotateTowardsNearestEnemyJob
        {
            dt = dt,
@@ -67,12 +66,12 @@ public partial class FaceTargetSystem : SystemBase
        
        rotateTowardsNearestTargetJob.Complete();
     }
-
 }
 
 
 
 [WithAll(typeof(ChaserTag))]
+[BurstCompile]
 public partial struct RotateTowardsPlayerJob : IJobEntity
 {
     public float dt;
@@ -91,6 +90,7 @@ public partial struct RotateTowardsPlayerJob : IJobEntity
 }
 
 [WithAll(typeof(TowerTag))]
+[BurstCompile]
 public partial struct RotateTowardsNearestEnemyJob : IJobEntity
 {
     [ReadOnly]

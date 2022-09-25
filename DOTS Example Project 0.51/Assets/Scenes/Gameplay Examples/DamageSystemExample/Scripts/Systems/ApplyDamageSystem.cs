@@ -1,5 +1,5 @@
+using System.ComponentModel;
 using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -10,77 +10,78 @@ public partial class ApplyDamageSystem : SystemBase
 {
     
     protected override void OnUpdate()
-    {
-        var dt = Time.DeltaTime;
+    { 
+        
         var storage = GetStorageInfoFromEntity();
-        var allTransforms = GetComponentDataFromEntity<Translation>();
+        var allTransforms = GetComponentDataFromEntity<Translation>(true);
+        var allTookDamageArray = GetComponentDataFromEntity<TookDamage>(true);
+        var ecb = new EntityCommandBuffer(World.UpdateAllocator.ToAllocator);
+        
 
-        Entities.WithNativeDisableContainerSafetyRestriction(allTransforms).ForEach((ref DependencySingletonComponent singletonComp, ref Translation trans) =>
+       var chedkDistJob = new CheckDistanceJob
         {
-            #region EntitymangagerCheck
+            translationArray = allTransforms,
+            SIFE = storage
+        }.Schedule();
+
+        var damageJob = new DamageJob
+        {
+            tookDamageArray = allTookDamageArray,
+            ecb = ecb,
+            SIFE = storage
+        }.Schedule(chedkDistJob);
+
+        damageJob.Complete();
+        
+        ecb.Playback(EntityManager);
+    }
+}
+
+
+[BurstCompile]
+public partial struct CheckDistanceJob : IJobEntity
+{
+    [Unity.Collections.ReadOnly]
+    public ComponentDataFromEntity<Translation> translationArray;
+    public StorageInfoFromEntity SIFE; 
+    public void Execute(ref DependencySingletonComponent singletonComp, in Translation trans)
+    {
+        if (!SIFE.Exists(singletonComp.targetEntity)) return;
             
-            if (!EntityManager.Exists(singletonComp.targetEntity)) return;
-            
-            // if (HasComponent<Translation>(singletonComp.targetEntity))
-            //     {
-                     //float3 targetEntityPos = GetComponent<Translation>(singletonComp.targetEntity).Value;
-                     float3 targetEntityPos = allTransforms[singletonComp.targetEntity].Value; 
-                     singletonComp.distance = math.distance(trans.Value, targetEntityPos);
+         if (translationArray.TryGetComponent(singletonComp.targetEntity, out Translation enemyTrans))
+             {
+        float3 targetEntityPos = enemyTrans.Value;
+        singletonComp.distance = math.distance(trans.Value, targetEntityPos);
                      
-                     //This is just for visualisation of range.
-                     Debug.DrawRay(trans.Value, math.normalizesafe(targetEntityPos) * singletonComp.radius, singletonComp.distance < singletonComp.radius ? Color.red : Color.magenta);
-                  
-                // }
-            #endregion
-            
-            #region StorageInfoFromEntityCheck
-            //
-            // if (!storage.Exists(singletonComp.targetEntity)) return; 
-            //
-            //     if (HasComponent<Translation>(singletonComp.targetEntity))
-            //     {
-            //         var targetEntityPos = GetComponent<Translation>(singletonComp.targetEntity).Value;
-            //         singletonComp.distance = math.distance(trans.Value, targetEntityPos);
-            //         
-            //         Debug.DrawRay(trans.Value, targetEntityPos, singletonComp.distance < singletonComp.radius ? Color.red : Color.blue);
-            //         Debug.DrawRay(trans.Value, math.normalizesafe(targetEntityPos) * singletonComp.radius, singletonComp.distance < singletonComp.radius ? Color.red : Color.magenta);
-            //     }
-            //     
-            #endregion
+        //This is just for visualisation of range.
+        Debug.DrawRay(trans.Value, math.normalizesafe(targetEntityPos) * singletonComp.radius,
+            singletonComp.distance < singletonComp.radius ? Color.red : Color.magenta);
+             }
+    }
+}
 
-            #region CompondataFromEntityCheck
+[BurstCompile]
+public partial struct DamageJob : IJobEntity
+{
+    public StorageInfoFromEntity SIFE;
+    [Unity.Collections.ReadOnly]
+    public ComponentDataFromEntity<TookDamage> tookDamageArray;
+    public EntityCommandBuffer ecb;  
+    public void Execute(Entity entity, in DependencySingletonComponent singletonComp)
+    {
+        var enemyEntity = singletonComp.targetEntity;
+        if (!SIFE.Exists(enemyEntity)) return;
             
-            // if (allTransforms.TryGetComponent(singletonComp.targetEntity,out Translation enemyTrans))
-            // {
-            //     enemyTrans = GetComponent<Translation>(singletonComp.targetEntity);
-            //     singletonComp.distance = math.distance(trans.Value, enemyTrans.Value);
-            // }
-            #endregion
-         
-        }).WithoutBurst().Run();
-        
-        
-        //make a IJobEntityVersion
-        
-        
-
-        Entities.ForEach((Entity entity, in DependencySingletonComponent singletonComp) =>
+        if (singletonComp.distance < singletonComp.radius)
         {
-            var enemyEntity = singletonComp.targetEntity;
-            if (!storage.Exists(enemyEntity)) return;
-            
-                if (singletonComp.distance < singletonComp.radius || Input.GetKeyDown(KeyCode.Space))
+            if (!tookDamageArray.HasComponent(enemyEntity))
+            {
+                Debug.Log("took damage");
+                ecb.AddComponent(enemyEntity, new TookDamage
                 {
-                    if (!HasComponent<TookDamage>(enemyEntity))
-                    {
-                        Debug.Log("took damage");
-                        EntityManager.AddComponentData(enemyEntity, new TookDamage
-                        {
-                            Value = singletonComp.damage
-                        });
-                    }
-                }
-        }).WithStructuralChanges().Run();
-
+                    Value = singletonComp.damage
+                });
+            }
+        }
     }
 }

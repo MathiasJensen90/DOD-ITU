@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst;
 using Unity.Entities;
 using Unity.Jobs;
 using UnityEngine;
@@ -17,69 +18,58 @@ public partial class ResolveDamageSystem : SystemBase
     protected override void OnUpdate()
     {
         float dt = Time.DeltaTime;
+        var ecb = ecbSystem.CreateCommandBuffer();
+        var parallelEcb = ecbSystem.CreateCommandBuffer().AsParallelWriter();
 
-         Entities.WithAll<TookDamage>().WithNone<CooldownTag>().ForEach((Entity entity, ref EnemyComponent enemy, ref TookDamage tookDamage) =>
+       var killandbla = new KillOrAddColldownJob
         {
-            enemy.health -= tookDamage.Value;
-            if (enemy.health <= 0)
-            {
-                EntityManager.DestroyEntity(entity);
-            }
-            else
-            {
-                EntityManager.AddComponent<CooldownTag>(entity);
-            }
-        }).WithStructuralChanges().Run();
-       
-         Entities.WithAll<CooldownTag>().WithName("CooldownSystem").ForEach((Entity entity, int entityInQueryIndex,  ref EnemyComponent enemyComponent) =>
+            ecb = ecb
+        }.Schedule();
+
+       var cooldownTickJob = new CooldownTickJob
+       {
+           dt = dt,
+           ecb = parallelEcb
+       }.ScheduleParallel(killandbla);
+        
+        ecbSystem.AddJobHandleForProducer(cooldownTickJob);
+    }
+}
+
+[WithAll(typeof(TookDamage))]
+[WithNone(typeof(CooldownTag))]
+[BurstCompile]
+public partial struct KillOrAddColldownJob : IJobEntity
+{
+    public EntityCommandBuffer ecb;
+    public void Execute(Entity entity, ref EnemyComponent enemy, ref TookDamage tookDamage)
+    {
+        enemy.health -= tookDamage.Value;
+        if (enemy.health <= 0)
         {
-            enemyComponent.takingDamageColdown -= dt;
-            if (enemyComponent.takingDamageColdown <= 0)
-            {
-                enemyComponent.takingDamageColdown = 4; 
-                EntityManager.RemoveComponent<CooldownTag>(entity);
-                EntityManager.RemoveComponent<TookDamage>(entity);
-            }
-        }).WithStructuralChanges().Run();
-        
-         // TO DO Show better version of doing this without sttructural changes
+            ecb.DestroyEntity(entity);
+        }
+        else
+        {
+            ecb.AddComponent<CooldownTag>(entity);
+        }
+    }
+}
 
-        
-
-        #region withECB
-
-        
-       //
-       //
-       //  var ecb = ecbSystem.CreateCommandBuffer().AsParallelWriter();
-       //  float dt = Time.DeltaTime;
-       //
-       //    Entities.WithAll<TookDamage>().WithNone<CooldownTag>().ForEach((Entity entity, int entityInQueryIndex, ref EnemyComponent enemy, ref TookDamage tookDamage) =>
-       //  {
-       //      enemy.health -= tookDamage.Value;
-       //      if (enemy.health <= 0)
-       //      {
-       //          ecb.DestroyEntity(entityInQueryIndex, entity);
-       //      }
-       //      else
-       //      {
-       //          ecb.AddComponent<CooldownTag>(entityInQueryIndex, entity);
-       //      }
-       //  }).Schedule(Dependency);
-       //
-       //  Entities.WithAll<CooldownTag>().WithName("CooldownSystem").ForEach((Entity entity, int entityInQueryIndex,  ref EnemyComponent enemyComponent) =>
-       // {
-       //     enemyComponent.takingDamageColdown -= dt;
-       //     if (enemyComponent.takingDamageColdown <= 0)
-       //     {
-       //         enemyComponent.takingDamageColdown = 4; 
-       //         ecb.RemoveComponent<CooldownTag>(entityInQueryIndex, entity);
-       //         ecb.RemoveComponent<TookDamage>(entityInQueryIndex, entity);
-       //     }
-       // }).Schedule();
-       //
-       //  ecbSystem.AddJobHandleForProducer(Dependency);
-       #endregion
-       
+[WithAll(typeof(CooldownTag))]
+[BurstCompile]
+public partial struct CooldownTickJob : IJobEntity
+{
+    public float dt; 
+    public EntityCommandBuffer.ParallelWriter ecb; 
+    public void Execute(Entity entity, [EntityInQueryIndex]int index,  ref EnemyComponent enemyComponent)
+    {
+        enemyComponent.takingDamageColdown -= dt;
+        if (enemyComponent.takingDamageColdown <= 0)
+        {
+            enemyComponent.takingDamageColdown = 4; 
+            ecb.RemoveComponent<CooldownTag>(index, entity);
+            ecb.RemoveComponent<TookDamage>(index, entity);
+        }
     }
 }

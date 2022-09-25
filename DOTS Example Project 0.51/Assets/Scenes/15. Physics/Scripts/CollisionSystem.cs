@@ -19,17 +19,14 @@ public partial class CollisionSystem : SystemBase
 
     protected override void OnUpdate()
     {
-
         var collisionJob = new ColissionJob
         {
             allPlayer = GetComponentDataFromEntity<PhysicsPlayer>(),
             allPhysicsVelocity = GetComponentDataFromEntity<PhysicsVelocity>(),
             allJumpingPlatforms = GetComponentDataFromEntity<JumpingPlatform>()
-        };
-
-        Dependency = collisionJob.Schedule(stepPhysicsWorld.Simulation, Dependency);
+        }.Schedule(stepPhysicsWorld.Simulation, Dependency);
         
-        Dependency.Complete();
+        collisionJob.Complete();
     }
 }
 
@@ -50,7 +47,7 @@ public struct ColissionJob : ICollisionEventsJob
 
         if (EntityAIsPlayer && !EntityBIsPlatform || EntityBIsPlatform && !EntityAIsPlayer) return;
 
-        if (EntityAIsPlayer && EntityBIsPlatform)
+        if (allJumpingPlatforms.HasComponent(entityA) && allPlayer.HasComponent(entityB))
         {
             PhysicsVelocity physVelocity = allPhysicsVelocity[entityA];
             float velocityMod = allJumpingPlatforms[entityB].force;
@@ -59,7 +56,7 @@ public struct ColissionJob : ICollisionEventsJob
 
             allPhysicsVelocity[entityA] = physVelocity; 
         }
-        if (EntityBIsPlatform && EntityAIsPlayer)
+        else if (allJumpingPlatforms.HasComponent(entityB) && allPlayer.HasComponent(entityA))
         {
             PhysicsVelocity physVelocity = allPhysicsVelocity[entityA];
             float velocityMod = allJumpingPlatforms[entityB].force;

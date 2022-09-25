@@ -26,11 +26,10 @@ public partial class TriggerSystem : SystemBase
             allPickups = GetComponentDataFromEntity<PickupTag>(true),
             allPlayers = GetComponentDataFromEntity<PhysicsPlayer>(),
             ecb = endECBSystem.CreateCommandBuffer()
-        };
+        }.Schedule(stepPhysicsWorld.Simulation, Dependency);
 
-        Dependency = triggerJob.Schedule(stepPhysicsWorld.Simulation, Dependency);
+        triggerJob.Complete();
         endECBSystem.AddJobHandleForProducer(Dependency);
-
     }
 }
 
@@ -46,9 +45,6 @@ struct TriggerJob : ITriggerEventsJob
     {
         Entity entityA = triggerEvent.EntityA;
         Entity entityB = triggerEvent.EntityB;
-        
-        
-        if (allPickups.HasComponent(entityA) && allPickups.HasComponent(entityB)) return;
 
         if (allPickups.HasComponent(entityA) && allPlayers.HasComponent(entityB))
         {
@@ -64,6 +60,5 @@ struct TriggerJob : ITriggerEventsJob
             allPlayers[entityA] = newPickupAquirred;
             ecb.DestroyEntity(entityB);
         }
-
     }
 }

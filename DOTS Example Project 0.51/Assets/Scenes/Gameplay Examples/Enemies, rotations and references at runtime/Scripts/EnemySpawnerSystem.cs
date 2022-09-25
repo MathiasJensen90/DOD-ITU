@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -54,6 +55,7 @@ public partial class EnemySpawnerSystem : SystemBase
 
 
 
+[BurstCompile]
 public partial struct EnemeySpawnJob : IJobEntity
 {
     public float dt;
