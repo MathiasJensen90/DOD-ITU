@@ -152,14 +152,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 399803413d614ccf89e5b30c410857f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NumSeekers: 10000
-  NumTargets: 10000
+  NumSeekers: 1000
+  NumTargets: 1000
   bounds:
     x: 200
     y: 200
   SeekerPrefab: {fileID: 6799008890615508230, guid: 5374ad427162e4a2bb4c296dd0234c66, type: 3}
   TargetPrefab: {fileID: 6799008890615508230, guid: f2c7cfca4227c403ea553e65f5fb6986, type: 3}
-  config: 4
+  config: 0
 --- !u!4 &1691666528
 Transform:
   m_ObjectHideFlags: 0

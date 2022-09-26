@@ -47,7 +47,6 @@ public partial struct TargetAndSeekersInitJob : IJobEntity
             {
                 direction = rndomDir
             });
-      
         }
 
         for (int i = 0; i < initData.NumTargets; i++)

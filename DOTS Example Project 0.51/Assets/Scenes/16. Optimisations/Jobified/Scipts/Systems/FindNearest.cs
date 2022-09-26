@@ -15,10 +15,6 @@ public partial class FindNearestSystem : SystemBase
         var targetPositions = query.ToComponentDataArray<Translation>(World.UpdateAllocator.ToAllocator);
         var configFil = GetSingleton<InitData>();
 
-
-
-
-
         if (configFil.config == SchedulingConfig.schedule)
         {
             var findNearestJob = new FindNearestJob
@@ -121,9 +117,7 @@ public partial struct SortedFindingNearest : IJobEntity
 {
     [Unity.Collections.ReadOnly]
     public NativeArray<Translation> transArray;
-    
- 
-    
+
     public void Execute(ref SeekerData seeker,  in Translation trans)
     {
         float3 seekerPos = trans.Value;
