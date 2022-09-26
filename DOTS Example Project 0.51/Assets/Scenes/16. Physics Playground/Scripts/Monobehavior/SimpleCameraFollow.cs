@@ -9,7 +9,6 @@ public class SimpleCameraFollow : MonoBehaviour
 {
     public Vector3 offset;
     Vector3 targetPosition;
-
     private Camera mainCamera;
 
     public static SimpleCameraFollow Instance;
@@ -31,13 +30,13 @@ public class SimpleCameraFollow : MonoBehaviour
         mainCamera = Camera.main;
     }
 
-    public void UpdateTargetPosition(float3 position)
-    {
-        targetPosition = position;
-    }
-
     private void LateUpdate()
     {
         mainCamera.gameObject.transform.position = targetPosition + offset;
+    }
+    
+    public void UpdateTargetPosition(float3 position)
+    {
+        targetPosition = position;
     }
 }

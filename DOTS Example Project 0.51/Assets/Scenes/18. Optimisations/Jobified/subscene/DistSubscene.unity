@@ -159,7 +159,7 @@ MonoBehaviour:
     y: 200
   SeekerPrefab: {fileID: 6799008890615508230, guid: 5374ad427162e4a2bb4c296dd0234c66, type: 3}
   TargetPrefab: {fileID: 6799008890615508230, guid: f2c7cfca4227c403ea553e65f5fb6986, type: 3}
-  config: 0
+  config: 1
 --- !u!4 &1691666528
 Transform:
   m_ObjectHideFlags: 0

@@ -33,39 +33,12 @@ using UnityEngine;
                     Value = entity
                 });
             }).Schedule();
-            
-          
-            // var allEnemyComponent = GetEntityQuery(ComponentType.ReadOnly<ChaserTag>());
-            // var allEnemyEntities = allEnemyComponent.ToEntityArray(Allocator.TempJob);
-            //
-            // Entities.ForEach((Entity entity, DynamicBuffer<EnemyTargetBuffer> targetbuffer, in Tower tower) =>
-            // {
-            //     if (tower.previousNumEnemies < tower.numEnemies)
-            //     {
-            //         targetbuffer.Add(new EnemyTargetBuffer
-            //         {
-            //             Value = allEnemyEntities[0]
-            //         });
-            //     }
-            //
-            // }).Run();
-            
+
             Dependency.Complete();
             ecb.Playback(EntityManager);
-            
             ecb.Dispose();
-            // allEnemyEntities.Dispose();
         }
     }
 
 
 
-public partial struct AddTargetBufferToTowers : IJobEntity
-{
-    public EntityCommandBuffer ecb;
-    public void Execute(Entity entity)
-    {
-        
-    }
-    
-}

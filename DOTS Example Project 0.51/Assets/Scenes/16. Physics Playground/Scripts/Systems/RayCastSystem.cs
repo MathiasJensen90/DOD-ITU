@@ -44,7 +44,6 @@ public partial struct RayCastJob : IJobEntity
                 GroupIndex = 0
             }
         };
-        
 
         if (physWorld.CastRay(input, out RaycastHit hit))
         {
