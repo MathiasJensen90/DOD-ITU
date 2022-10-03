@@ -19,11 +19,9 @@ public partial struct SimpleIdomaticForeach : ISystem
 
     public void OnUpdate(ref SystemState state)
     {
-       //var lwt = state.GetComponentLookup<LocalToWorldTransform>(true);
-
-       var dt = SystemAPI.Time.DeltaTime;
-
-       foreach (var localworldTransform in SystemAPI.Query<RefRW<LocalToWorldTransform>>())
+        var dt = SystemAPI.Time.DeltaTime;
+       
+       foreach (var localworldTransform in SystemAPI.Query<RefRW<LocalToParentTransform>>())
        {
            localworldTransform.ValueRW.Value = localworldTransform.ValueRO.Value.Translate(new float3(0, 0, 0.01f));
        }

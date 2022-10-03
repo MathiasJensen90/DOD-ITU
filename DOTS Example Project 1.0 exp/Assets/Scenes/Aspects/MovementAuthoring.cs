@@ -20,5 +20,5 @@ public class MovementAuthoring : MonoBehaviour
 
 public struct moveSpeed : IComponentData
 {
-    public float Value; 
+    public float Value;
 }
