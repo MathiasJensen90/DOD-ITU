@@ -9,19 +9,19 @@ public partial class FaceTargetSystem : SystemBase
 {
     protected override void OnCreate()
     {
-        RequireSingletonForUpdate<GameplayInteractionSingleton>();
+        RequireForUpdate<GameplayInteractionSingleton>();
     }
 
     protected override void OnUpdate()
-    { 
-        float dt = Time.DeltaTime;
-       var translationArray = GetComponentDataFromEntity<Translation>(true);
+    {
+        float dt = SystemAPI.Time.DeltaTime; 
+       var translationArray = GetComponentLookup<Translation>(true);
 
        var rotateTowardsPlayerJob = new RotateTowardsPlayerJob
        {
            dt = dt,
            translationArray = translationArray
-       }.ScheduleParallel();
+       }.ScheduleParallel(Dependency);
 
        /*Entities.WithAll<ChaserTag>().ForEach((ref Rotation rotation, ref moveData moveData, in Translation trans, in TowerTarget target) =>
         {
@@ -76,7 +76,7 @@ public partial struct RotateTowardsPlayerJob : IJobEntity
 {
     public float dt;
     [ReadOnly]
-    public ComponentDataFromEntity<Translation> translationArray; 
+    public ComponentLookup<Translation> translationArray; 
     
     public void Execute(ref Rotation rotation, ref moveData moveData, in Translation trans, in TowerTarget target)
     {
@@ -94,7 +94,7 @@ public partial struct RotateTowardsPlayerJob : IJobEntity
 public partial struct RotateTowardsNearestEnemyJob : IJobEntity
 {
     [ReadOnly]
-    public ComponentDataFromEntity<Translation> translationArray;
+    public ComponentLookup<Translation> translationArray;
     public float dt;
 
     public void Execute(DynamicBuffer<EnemyTargetBuffer> enemyBuffer, ref Rotation rotation, ref moveData moveData, in Translation trans)

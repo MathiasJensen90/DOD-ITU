@@ -2,9 +2,24 @@ using System;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
+using UnityEngine;
 
-[GenerateAuthoringComponent]
-public struct EntitiesExampleSingleton : IComponentData
+
+public class EntitiesExampleSingleton : MonoBehaviour
 {
+    
+    public class Baker : Baker<EntitiesExampleSingleton>
+    {
+        public override void Bake(EntitiesExampleSingleton authoring)
+        {
+            AddComponent<EntitiesExampleSingletonTag>();
+        }
+    }
 
+}
+
+
+public struct EntitiesExampleSingletonTag : IComponentData
+{
+    
 }

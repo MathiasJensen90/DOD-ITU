@@ -7,7 +7,6 @@ using Unity.Mathematics;
 
 //you can only have one [GenerateAuthoringComponent] per script.
 //You can declare more components in the same file, but it is best to avoid doing that for clarity
-[GenerateAuthoringComponent]
 public struct MyComponent : IComponentData
 {
     public float scale;

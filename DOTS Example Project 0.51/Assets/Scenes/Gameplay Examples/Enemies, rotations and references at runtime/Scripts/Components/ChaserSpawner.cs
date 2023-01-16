@@ -3,7 +3,6 @@ using UnityEngine;
 using Random = Unity.Mathematics.Random;
 
 
-[GenerateAuthoringComponent]
 public struct ChaserSpawner : IComponentData
     {
         public Entity chaser;

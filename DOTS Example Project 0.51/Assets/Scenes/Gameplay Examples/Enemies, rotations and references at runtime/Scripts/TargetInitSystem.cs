@@ -7,12 +7,12 @@ using UnityEngine;
     {
         protected override void OnCreate()
         {
-            RequireSingletonForUpdate<GameplayInteractionSingleton>();
+            RequireForUpdate<GameplayInteractionSingleton>();
         }
 
         protected override void OnUpdate()
         {
-            var tower = GetSingletonEntity<TowerTag>();
+            var tower = SystemAPI.GetSingletonEntity<TowerTag>(); 
             var ecb = new EntityCommandBuffer(Allocator.TempJob);
             
             Entities.WithAll<TowerTag>().WithNone<EnemyTargetBuffer>().ForEach((Entity entity) =>
@@ -27,7 +27,7 @@ using UnityEngine;
                     Value = tower
                 });
 
-                var bufferFromTower = GetBuffer<EnemyTargetBuffer>(tower);
+                var bufferFromTower = SystemAPI.GetBuffer<EnemyTargetBuffer>(tower); 
                 bufferFromTower.Add(new EnemyTargetBuffer
                 {
                     Value = entity

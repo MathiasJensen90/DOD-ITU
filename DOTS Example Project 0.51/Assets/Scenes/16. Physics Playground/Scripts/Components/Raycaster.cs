@@ -4,7 +4,6 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics.Authoring;
 
-[GenerateAuthoringComponent]
 public struct Raycaster : IComponentData
 {
    public float rayLengt;

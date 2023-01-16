@@ -10,7 +10,7 @@ public partial class SpawnSystem : SystemBase
 {
     protected override void OnCreate()
     {
-        RequireSingletonForUpdate<ECBSingletonComponent>();
+        RequireForUpdate<ECBSingletonComponent>();
     }
 
     protected  override void OnUpdate()

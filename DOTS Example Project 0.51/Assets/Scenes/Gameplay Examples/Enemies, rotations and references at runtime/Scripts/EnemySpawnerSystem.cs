@@ -11,12 +11,12 @@ public partial class EnemySpawnerSystem : SystemBase
 {
     protected override void OnCreate()
     {
-        RequireSingletonForUpdate<GameplayInteractionSingleton>();
+        RequireForUpdate<GameplayInteractionSingleton>();
     }
 
     protected override void OnUpdate()
     {
-        var dt = Time.DeltaTime;
+        var dt = SystemAPI.Time.DeltaTime; 
         var ecb = new EntityCommandBuffer(World.UpdateAllocator.ToAllocator);
 
         new EnemeySpawnJob

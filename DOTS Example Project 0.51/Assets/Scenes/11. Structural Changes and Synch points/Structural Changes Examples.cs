@@ -9,7 +9,7 @@ public partial class StructuralChangesExample : SystemBase
 {
     protected override void OnCreate()
     {
-        RequireSingletonForUpdate<StructuralChangesSingleton>();
+        RequireForUpdate<StructuralChangesSingleton>();
     }
 
     protected override void OnUpdate()

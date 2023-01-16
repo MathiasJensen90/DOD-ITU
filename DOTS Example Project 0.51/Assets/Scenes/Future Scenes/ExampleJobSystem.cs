@@ -13,7 +13,7 @@ public partial class ExampleJobSystems : SystemBase
 {
     protected override void OnCreate()
     {
-       RequireSingletonForUpdate<IJobSingleton>();
+       RequireForUpdate<IJobSingleton>();
     }
 
     protected override void OnUpdate()

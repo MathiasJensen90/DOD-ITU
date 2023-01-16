@@ -11,7 +11,7 @@ public partial class RotationSystem : SystemBase
 {
     protected override void OnUpdate()
     {
-        float dt = Time.DeltaTime;
+        float dt = SystemAPI.Time.DeltaTime; 
 
         Entities.WithAll<RotateTag>().WithNone<StopRotatingTag>().ForEach((ref Rotation rotation, in WaveDataComponent waveData) =>
         {

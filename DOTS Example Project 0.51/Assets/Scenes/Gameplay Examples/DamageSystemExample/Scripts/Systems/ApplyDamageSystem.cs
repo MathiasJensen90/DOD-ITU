@@ -12,9 +12,9 @@ public partial class ApplyDamageSystem : SystemBase
     protected override void OnUpdate()
     { 
         
-        var storage = GetStorageInfoFromEntity();
-        var allTransforms = GetComponentDataFromEntity<Translation>(true);
-        var allTookDamageArray = GetComponentDataFromEntity<TookDamage>(true);
+        var storage = GetEntityStorageInfoLookup();
+        var allTransforms = GetComponentLookup<Translation>(true);
+        var allTookDamageArray = GetComponentLookup<TookDamage>(true);
         var ecb = new EntityCommandBuffer(World.UpdateAllocator.ToAllocator);
         
 
@@ -22,7 +22,7 @@ public partial class ApplyDamageSystem : SystemBase
         {
             translationArray = allTransforms,
             SIFE = storage
-        }.Schedule();
+        }.Schedule(Dependency);
 
         var damageJob = new DamageJob
         {
@@ -42,8 +42,8 @@ public partial class ApplyDamageSystem : SystemBase
 public partial struct CheckDistanceJob : IJobEntity
 {
     [Unity.Collections.ReadOnly]
-    public ComponentDataFromEntity<Translation> translationArray;
-    public StorageInfoFromEntity SIFE; 
+    public ComponentLookup<Translation> translationArray;
+    public EntityStorageInfoLookup SIFE; 
     public void Execute(ref DependencySingletonComponent singletonComp, in Translation trans)
     {
         if (!SIFE.Exists(singletonComp.targetEntity)) return;
@@ -63,9 +63,9 @@ public partial struct CheckDistanceJob : IJobEntity
 [BurstCompile]
 public partial struct DamageJob : IJobEntity
 {
-    public StorageInfoFromEntity SIFE;
+    public EntityStorageInfoLookup SIFE;
     [Unity.Collections.ReadOnly]
-    public ComponentDataFromEntity<TookDamage> tookDamageArray;
+    public ComponentLookup<TookDamage> tookDamageArray;
     public EntityCommandBuffer ecb;  
     public void Execute(Entity entity, in DependencySingletonComponent singletonComp)
     {

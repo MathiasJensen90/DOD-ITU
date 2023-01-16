@@ -10,12 +10,12 @@ public partial class EneemyMovementSystem : SystemBase
 {
     protected override void OnUpdate()
     {
-        float dt = Time.DeltaTime;
+        float dt = SystemAPI.Time.DeltaTime; 
 
         var enemyMovementJob = new EnemyMovementJob
         {
             dt = dt
-        }.Schedule();
+        }.Schedule(Dependency);
         
         enemyMovementJob.Complete();
         

@@ -7,7 +7,7 @@ using UnityEngine;
         
          protected override void OnCreate()
         {
-            RequireSingletonForUpdate<SystemOrderSingleton>();
+            RequireForUpdate<SystemOrderSingleton>();
         }
         protected override void OnUpdate()
         {

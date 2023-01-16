@@ -6,18 +6,17 @@ public partial class MoveSeekersAndTargetsSystem  : SystemBase
 {
     protected override void OnUpdate()
     {
-        float dt = Time.DeltaTime;
-        var seeksersJob = new SeekersMoveJob
+        float dt = SystemAPI.Time.DeltaTime; 
+        new SeekersMoveJob
         {
             dt = dt
         }.Schedule();
-        var targetsJob = new TargetsMoveJob
+       new TargetsMoveJob
         {
             dt = dt
         }.Schedule();
-        
-        seeksersJob.Complete();
-        targetsJob.Complete();
+       
+        Dependency.Complete();
     }
 }
 

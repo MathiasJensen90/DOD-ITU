@@ -5,6 +5,9 @@ EditorUserSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 4
   m_ConfigSettings:
+    Advanced:
+      value: 183b144645154b6805011b0314355e1e15121c1d233a2a343e6b4773e4e1382be78d2b
+      flags: 0
     Advanced Settings:
       value: 183b144645154b6805011b0314355e1e15121c1d233a2a343e6b4773e4e1382be78d2b
       flags: 0
@@ -16,6 +19,15 @@ EditorUserSettings:
       flags: 0
     Entity Inspector Settings:
       value: 183b144645154b790c0d07271e271d4a564654406c6866706f0d1420f2ec3521c1e83bf9e8343a322d36f62c017c5b7ff40b0518f36117
+      flags: 0
+    Hierarchy Window:
+      value: 183b144645154b7802000a2b17364d11021e17246e72662b47695d73a2a07478a2a503f9e33b2b39140deb394664416ebe60494bb64b4a4b514ebf2318f1191e04c835cc16c4160fce1a13c0c90ef3e6c1c1d1efd6c3eeddccdeb2f1fce9dbe8f1f0b1fe89b1ffccafbcbcebef939188ab8af7848c868987fa90fcd2a6dadfc6d4fb8cdad58ecbdeda82ae89b1a0a2b6b6a5ad829ab7acbb999f88b722e9ef31302b02fafcf8f6c0fdf92dc1577e9081666ea57176848889a09c6b89939c909b4b9597b9478f99935297579b23152032310538053a14052c1b292c1e1d2d61310227297f07797d2d2d3b134a454e794d6c4f214e3d2a4d44333040233e46545c62531d511e0c19065a726d494e636263696655666b32303b260f24343fed2220e23338e3c734fd38e5dde518f54165b0a7a7a85a5c584a7a4d49bd538280545880e20ecacb0f1b192cecc11de91be531ddeeecf8f0e4f8d8f4efcfedf99daab3f7a4f4b6ffc2bfbcebb9e1c4b0
+      flags: 0
+    Inspector:
+      value: 183b144645154b7f041d1c2e113a7c1f1b0717242926320434391871b8a03239eef43383fa
+      flags: 0
+    RecentlyUsedSceneGuid-0:
+      value: 5508525006545c595e0c0e2148725b441316192f782c74637a714c62e0b1616f
       flags: 0
     RecentlyUsedScenePath-0:
       value: 22424703114646680e0b0227036c0e4658572822353b2f333e692d3fe3f9332aedf238eda80a37252a0bec2f373d0431f7441c05ff1f13
@@ -70,9 +82,13 @@ EditorUserSettings:
   m_VCDebugCmd: 0
   m_VCDebugOut: 0
   m_SemanticMergeMode: 2
+  m_DesiredImportWorkerCount: 4
+  m_StandbyImportWorkerCount: 2
+  m_IdleImportWorkerShutdownDelay: 60000
   m_VCShowFailedCheckout: 1
   m_VCOverwriteFailedCheckoutAssets: 1
   m_VCProjectOverlayIcons: 1
   m_VCHierarchyOverlayIcons: 1
   m_VCOtherOverlayIcons: 1
   m_VCAllowAsyncUpdate: 1
+  m_ArtifactGarbageCollection: 1

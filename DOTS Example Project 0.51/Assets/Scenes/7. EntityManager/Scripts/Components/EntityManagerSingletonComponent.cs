@@ -4,7 +4,6 @@ using Unity.Entities;
 using Unity.Physics;
 using UnityEngine;
 
-[GenerateAuthoringComponent]
 public struct EntityManagerSingletonComponent : IComponentData
 {
    public Entity prefabToSpawn;

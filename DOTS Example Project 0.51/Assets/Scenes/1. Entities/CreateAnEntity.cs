@@ -4,19 +4,24 @@ using Unity.Entities;
 using UnityEngine;
 
 
-public partial class CreateAnEntity : SystemBase
+public partial struct CreateAnEntity : ISystem
 {
-    protected override void OnCreate()
-    {
-        RequireSingletonForUpdate<EntitiesExampleSingleton>();
 
+    public void OnCreate(ref SystemState state)
+    {
+        state.RequireForUpdate<EntitiesExampleSingletonTag>();
     }
 
-    protected override void OnUpdate()
+    public void OnDestroy(ref SystemState state)
     {
-        var e = EntityManager.CreateEntity(); 
-        EntityManager.SetName(e, "myEntity");
-        Enabled = false;
+       
+    }
 
+    public void OnUpdate(ref SystemState state)
+    {
+        var entityManager = state.EntityManager; 
+        var e = entityManager.CreateEntity(); 
+        entityManager.SetName(e, "myEntity");
+        state.Enabled = false;
     }
 }

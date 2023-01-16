@@ -11,7 +11,7 @@ public partial class ReadWriteExample : SystemBase{
         Entities.ForEach((in Translation trans, in ReadWriteComp readWriteComp) =>
         {
             Entity entityRef = readWriteComp.entityRef;
-            float3 entityPos = GetComponent<Translation>(entityRef).Value;
+            float3 entityPos = SystemAPI.GetComponent<Translation>(entityRef).Value; 
 
             EntityManager.SetComponentData(entityRef, new Translation
             {

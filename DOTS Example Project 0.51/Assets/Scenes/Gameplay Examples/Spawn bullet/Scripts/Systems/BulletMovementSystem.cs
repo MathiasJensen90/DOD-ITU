@@ -9,11 +9,11 @@ public partial class BulletMovementSystem : SystemBase
 {
     protected override void OnUpdate()
     {
-        float dt = Time.DeltaTime;
+        float dt = SystemAPI.Time.DeltaTime; 
         var bulletMoveJob = new bulletMoveJob
         {
             dt = dt
-        }.ScheduleParallel();
+        }.ScheduleParallel(Dependency);
         
         bulletMoveJob.Complete();
     }

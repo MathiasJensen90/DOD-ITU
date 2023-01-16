@@ -8,19 +8,22 @@ public partial class IJobEntityExample : SystemBase
 {
     protected override void OnCreate()
     {
-        RequireSingletonForUpdate<IJobSingleton>();
+        RequireForUpdate<IJobSingleton>();
     }
 
     protected override void OnUpdate()
     {
-        float deltaTime = Time.DeltaTime;
+        float deltaTime = SystemAPI.Time.DeltaTime;  
         
         RotationJob rotationJob = new RotationJob
         {
             deltaTime = deltaTime
         };
 
-        JobHandle rotationJobhandle = rotationJob.Schedule();
+        JobHandle rotationJobhandle = rotationJob.Schedule(Dependency);
+
+        rotationJob.Schedule();
+
         
         rotationJobhandle.Complete();
 

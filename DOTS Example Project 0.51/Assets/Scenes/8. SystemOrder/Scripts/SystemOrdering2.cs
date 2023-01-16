@@ -6,7 +6,7 @@ public partial class SystemOrdering2 : SystemBase
     {
         protected override void OnCreate()
         {
-            RequireSingletonForUpdate<SystemOrderSingleton>();
+            RequireForUpdate<SystemOrderSingleton>();
         }
 
         protected override void OnUpdate()

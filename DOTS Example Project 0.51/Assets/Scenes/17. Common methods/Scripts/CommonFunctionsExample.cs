@@ -10,8 +10,8 @@ public partial class CommonFunctionsExample : SystemBase
 {
     protected override void OnUpdate()
     {
-        ComponentDataFromEntity<Rotation> rotations = GetComponentDataFromEntity<Rotation>();
-        ComponentDataFromEntity<Translation> translations = GetComponentDataFromEntity<Translation>(true);
+        ComponentLookup<Rotation> rotations = GetComponentLookup<Rotation>();
+        ComponentLookup<Translation> translations = GetComponentLookup<Translation>(true);
         
         EntityQuery query = GetEntityQuery(ComponentType.Exclude<Bullet>(), ComponentType.ReadOnly<Translation>());
         var entityArray = query.ToEntityArray(Allocator.Persistent);
@@ -32,17 +32,14 @@ public partial class CommonFunctionsExample : SystemBase
             rotComp.Value = new quaternion(1, 1, 1, 1);
         };
 
-
-        var oneEntity = GetSingletonEntity<PhysicsPlayer>();
-        var oneComp = GetSingleton<Bullet>();
-
-
+        var oneEntity = SystemAPI.GetSingletonEntity<PhysicsPlayer>();
+        var oneComp = SystemAPI.GetSingleton<Bullet>();
     }
 }
 
 public partial struct BlandJob : IJobEntity
 {
-    [ReadOnly] public ComponentDataFromEntity<Translation> translations;
+    [ReadOnly] public ComponentLookup<Translation> translations;
     public Entity eRef;
     
     public void Execute(ref Translation trans)

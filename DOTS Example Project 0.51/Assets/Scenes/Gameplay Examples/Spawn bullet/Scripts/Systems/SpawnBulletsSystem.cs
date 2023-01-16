@@ -19,7 +19,7 @@ public partial class SpawnBulletsSystem : SystemBase
             ecb = ecb,
             mousePos = mousePos,
             input = input
-        }.Schedule();
+        }.Schedule(Dependency);
         
         spawnBulletJob.Complete();
         ecb.Playback(EntityManager);

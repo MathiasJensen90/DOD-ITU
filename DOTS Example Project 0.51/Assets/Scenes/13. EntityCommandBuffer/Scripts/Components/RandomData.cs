@@ -4,7 +4,6 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Random = Unity.Mathematics.Random;
 
-[GenerateAuthoringComponent]
 public struct RandomData : IComponentData
 {
     public Random Value;
