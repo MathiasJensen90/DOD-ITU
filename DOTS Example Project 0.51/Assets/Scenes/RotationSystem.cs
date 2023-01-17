@@ -13,9 +13,9 @@ public partial class RotationSystem : SystemBase
     {
         float dt = SystemAPI.Time.DeltaTime; 
 
-        Entities.WithAll<RotateTag>().WithNone<StopRotatingTag>().ForEach((ref Rotation rotation, in WaveDataComponent waveData) =>
+        Entities.WithAll<RotateTag>().WithNone<StopRotatingTag>().ForEach((ref Rotation rotation, in RotatingData rotateData) =>
         {
-            var xRot = quaternion.RotateX( waveData.rotationSpeed * Mathf.Deg2Rad * dt);
+            var xRot = quaternion.RotateX( rotateData.Value * Mathf.Deg2Rad * dt);
             
             rotation.Value = math.mul(rotation.Value, xRot);
         }).Schedule();

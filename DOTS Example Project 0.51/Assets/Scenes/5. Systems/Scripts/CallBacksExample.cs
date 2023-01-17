@@ -2,30 +2,22 @@
 using UnityEngine;
 
 
-    public partial class CallBacksExample : SystemBase
+    public partial struct CallBacksExample : ISystem
     {
-        protected override void OnDestroy()
+
+        public void OnCreate(ref SystemState state)
         {
-            
+
         }
 
-        protected override void OnStartRunning()
-        {
-            
-        }
-
-        protected override void OnStopRunning()
-        {
-            
-        }
-
-        protected override void OnCreate()
+        public void OnDestroy(ref SystemState state)
         {
           
         }
 
-        protected override void OnUpdate()
+        public void OnUpdate(ref SystemState state)
         {
-         
+           
         }
+        
     }

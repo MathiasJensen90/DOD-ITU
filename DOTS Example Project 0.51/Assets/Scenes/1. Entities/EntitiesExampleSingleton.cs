@@ -15,9 +15,7 @@ public class EntitiesExampleSingleton : MonoBehaviour
             AddComponent<EntitiesExampleSingletonTag>();
         }
     }
-
 }
-
 
 public struct EntitiesExampleSingletonTag : IComponentData
 {
