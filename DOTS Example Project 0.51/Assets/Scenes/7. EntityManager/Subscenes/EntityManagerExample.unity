@@ -104,7 +104,7 @@ NavMeshSettings:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_BuildSettings:
-    serializedVersion: 2
+    serializedVersion: 3
     agentTypeID: 0
     agentRadius: 0.5
     agentHeight: 2
@@ -117,7 +117,7 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualTileSize: 0
     tileSize: 256
-    accuratePlacement: 0
+    buildHeightMesh: 0
     maxJobWorkers: 0
     preserveTilesOutsideBounds: 0
     debug:
@@ -155,7 +155,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1940629450}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88c33e870eb94c94e859b95378b5dbe3, type: 3}
+  m_Script: {fileID: 11500000, guid: c9a5a49787ac48caa457ffe567b36829, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!65 &1940629452
@@ -166,9 +166,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1940629450}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1940629453
@@ -182,6 +190,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -230,6 +239,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.35, y: 3.82, z: -0.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -248,7 +258,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabToSpawn: {fileID: 23047573082391050, guid: 8714a12777260d5488632a1f238d5f46, type: 3}
   hasBuffer: 0
-  ExampleType: 0
+  exampleType: 0
 --- !u!114 &1940629457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,11 +268,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1940629450}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4d57bbc82492af4a8957b0ad2519eed, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f237e5a7ba84cdc95a3f4da3fd66e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amplitude: 0
-  frequency: 0
+  amplitude: 0.03
+  frequency: 0.12
   rotationSpeed: 78.33
 --- !u!114 &1940629458
 MonoBehaviour:
@@ -276,9 +286,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27536934a72b1554fbc7b2bf6d92447f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  input1: 49
-  input2: 50
-  input3: 51
-  input4: 52
+  input1: 273
+  input2: 274
+  input3: 276
+  input4: 275
   input5: 53
   input6: 54
