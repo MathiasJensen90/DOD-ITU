@@ -53,13 +53,9 @@ public partial struct SpawnPrefabs : ISystem
         {
             dt = dt,
             ecb = ecb
-        }.Schedule(state.Dependency);
+        }.Schedule();
         
         ecb.Playback(state.EntityManager);
-        
-        //spawnJob.Run();
-        // ecb.Playback(EntityManager);
-        // ecb.Dispose();
     }
 }
 
