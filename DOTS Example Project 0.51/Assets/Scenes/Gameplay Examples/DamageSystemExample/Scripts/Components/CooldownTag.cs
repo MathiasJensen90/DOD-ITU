@@ -1,8 +1,18 @@
 ﻿using Unity.Entities;
 using UnityEngine;
 
+public class CoolDownBaker : MonoBehaviour
+{
 
-    public struct CooldownTag : IComponentData
+    class baker : Baker<CoolDownBaker>
     {
-        
+        public override void Bake(CoolDownBaker authoring)
+        {
+            AddComponent<CoolDownTag>();
+        }
     }
+}
+public struct CoolDownTag : IComponentData
+{
+    
+}

@@ -4,15 +4,21 @@ using Unity.Entities;
 using UnityEngine;
 
 [UpdateBefore(typeof(SystemOrdering2))]
-public partial class SystemOrderExample : SystemBase
+public partial struct SystemOrderExample : ISystem
 {
-    protected override void OnCreate()
+    public  void OnCreate(ref SystemState state)
     {
-        RequireForUpdate<SystemOrderSingleton>();
+        state.RequireForUpdate<SystemOrderSingleton>();
+        
     }
-    protected override void OnUpdate()
+
+    public void OnDestroy(ref SystemState state)
+    {
+        
+    }
+    public void OnUpdate(ref SystemState state)
     {
         Debug.Log("Hello, I'm SystemOrdering");
-        Enabled = false;
+        state.Enabled = false;
     }
 }
