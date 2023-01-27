@@ -15,7 +15,7 @@ public class PlayerInputAuthoring : MonoBehaviour
    
    public void Convert(Entity entity, EntityManager dstManager)
    {
-      dstManager.AddComponentData(entity, new playerButtonsComponent
+      dstManager.AddComponentData(entity, new PlayerButtonsComponent
       {
          input1 = input1,
          input2 = input2,
@@ -39,7 +39,7 @@ public struct PlayerInputComponent : IComponentData
    public bool input6Value;
 }
 
-public struct playerButtonsComponent : IComponentData
+public struct PlayerButtonsComponent : IComponentData
 {
    public KeyCode input1;
    public KeyCode input2;

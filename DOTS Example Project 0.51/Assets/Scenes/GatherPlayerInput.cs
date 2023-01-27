@@ -1,16 +1,11 @@
-using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
-using Unity.Jobs;
-using Unity.Mathematics;
-using Unity.Transforms;
 using UnityEngine;
 
 public partial class GatherPlayerInput : SystemBase
 {
     protected override void OnUpdate()
     {
-        Entities.ForEach((Entity entity, ref PlayerInputComponent inputComp, in playerButtonsComponent playerButtons) =>
+        Entities.ForEach((Entity entity, ref PlayerInputComponent inputComp, in PlayerButtonsComponent playerButtons) =>
         {
             inputComp.input1Value = Input.GetKeyDown(playerButtons.input1); 
             inputComp.input2Value = Input.GetKeyDown(playerButtons.input2); 

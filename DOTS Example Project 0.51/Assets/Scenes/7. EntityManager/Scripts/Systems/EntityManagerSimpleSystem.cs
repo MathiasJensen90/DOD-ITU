@@ -1,54 +1,57 @@
-﻿using Unity.Entities;
+﻿using Unity.Collections;
+using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
     [UpdateAfter(typeof(GatherPlayerInput))]
-    public partial class EntityManagerSimpleSystem : SystemBase
+    public partial struct EntityManagerSimpleSystem : ISystem
     {
-        protected override void OnCreate()
+        public  void OnCreate(ref SystemState state)
         {
-            RequireForUpdate<EntityManagerSingletonComponent>();
+            state.RequireForUpdate<EntityManagerSingletonComponent>();
         }
-        protected override void OnUpdate()
-        {
-           var singleton = SystemAPI.GetSingleton<EntityManagerSingletonComponent>();
-           if (singleton.exampleType != EntityManagerExample.Simple) return;
 
-          
+        public void OnDestroy(ref SystemState state) { }
+
+        public void OnUpdate(ref SystemState state)
+        {
+            var ecb = new EntityCommandBuffer(Allocator.Temp);
+            var singleton = SystemAPI.GetSingleton<EntityManagerSingletonComponent>();
+           if (singleton.exampleType != EntityManagerExample.Simple) return;
            
-           Entities.ForEach((Entity entity, ref Translation trans, ref EntityManagerSingletonComponent singletonComp, in PlayerInputComponent input) =>
+           foreach(var(trans, singletonComp,input, entity) in SystemAPI.Query<RefRW<Translation>, RefRW<EntityManagerSingletonComponent>, RefRO<PlayerInputComponent>>().WithEntityAccess())
            {
-               if (input.input1Value)
+               if (input.ValueRO.input1Value)
                {
-                   EntityManager.RemoveComponent<RotateTag>(entity);
+                   ecb.RemoveComponent<RotateTag>(entity);
                    Debug.Log("ja");
                }
-               if (input.input2Value)
+               if (input.ValueRO.input2Value)
                {
-                   EntityManager.AddComponent<RotateTag>(entity);
+                   ecb.AddComponent<RotateTag>(entity);
                }
-               if (input.input3Value)
+               if (input.ValueRO.input3Value)
                {
-                   EntityManager.AddComponentData(entity, new NonUniformScale
+                   ecb.AddComponent(entity, new NonUniformScale
                    {
                        Value = new float3(2, 2, 2)
                    });
                }
-               if (input.input4Value)
+               if (input.ValueRO.input4Value)
                {
-                  
-                  Entity e = EntityManager.Instantiate(singletonComp.prefabToSpawn);
-                  EntityManager.SetComponentData(e, new Translation
+                   Entity e = ecb.Instantiate(singletonComp.ValueRW.prefabToSpawn);
+                  ecb.SetComponent(e, new Translation
                   {
                       Value = new float3(0, 1, 0)
                   });
                }
-               if (input.input5Value)
+               if (input.ValueRO.input5Value)
                {
-                   EntityManager.DestroyEntity(entity);
+                   ecb.DestroyEntity(entity);
                }
+               //ecb.Dispose();
 
-           }).WithStructuralChanges().Run();
+           }
         }
     }

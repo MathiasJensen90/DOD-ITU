@@ -2,11 +2,11 @@
 using UnityEngine;
 
 
-public class RoateTagBaker : MonoBehaviour 
+public class RotateTagBaker : MonoBehaviour 
 {
-       class baker : Baker<RoateTagBaker>
+       class baker : Baker<RotateTagBaker>
        {
-              public override void Bake(RoateTagBaker authoring)
+              public override void Bake(RotateTagBaker authoring)
               {
                      AddComponent<RotateTag>();
               }

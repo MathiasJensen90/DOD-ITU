@@ -286,9 +286,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27536934a72b1554fbc7b2bf6d92447f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  input1: 273
-  input2: 274
-  input3: 276
-  input4: 275
+  input1: 49
+  input2: 50
+  input3: 51
+  input4: 52
   input5: 53
   input6: 54

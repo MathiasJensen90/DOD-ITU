@@ -20,12 +20,9 @@ public partial class IJobEntityExample : SystemBase
             deltaTime = deltaTime
         };
 
-        JobHandle rotationJobhandle = rotationJob.Schedule(Dependency);
-
-        rotationJob.Schedule();
-
+        JobHandle rotationJobHandle = rotationJob.Schedule(Dependency);
         
-        rotationJobhandle.Complete();
+        rotationJobHandle.Complete();
 
         // #region EFE
         // Entities.ForEach((ref Rotation rot, in JobentityData jobentityData) =>
@@ -36,7 +33,6 @@ public partial class IJobEntityExample : SystemBase
         // #endregion
     }
 }
-
 
 public partial struct RotationJob : IJobEntity
 {

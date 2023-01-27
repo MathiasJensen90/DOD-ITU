@@ -7,7 +7,7 @@ public class WaveDataBaker : MonoBehaviour
     public float frequency;
     public float rotationSpeed;
 
-    class baker : Baker<WaveDataBaker>
+    class Baker : Baker<WaveDataBaker>
     {
         public override void Bake(WaveDataBaker authoring)
         {
