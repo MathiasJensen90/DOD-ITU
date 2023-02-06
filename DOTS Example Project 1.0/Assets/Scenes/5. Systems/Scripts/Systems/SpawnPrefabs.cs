@@ -16,7 +16,6 @@ public partial struct SpawnPrefabs : ISystem
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<SystemExampleSingleton>();
-       // ecbSystem = World.GetOrCreateSystem<BeginInitializationEntityCommandBufferSystem>();
     }
 
     public void OnDestroy(ref SystemState state)
@@ -27,18 +26,7 @@ public partial struct SpawnPrefabs : ISystem
     public void OnUpdate(ref SystemState state)
     {
         var ecb = new EntityCommandBuffer(state.WorldUpdateAllocator);
-        //var ecb = new EntityCommandBuffer(Allocator.TempJob);
         float dt = SystemAPI.Time.DeltaTime;
-
-        // Entities.ForEach((ref InputComp inputComp) =>
-        // {
-        //     if (Input.GetKeyDown(KeyCode.Space))
-        //     {
-        //         inputComp.spacePressed = !inputComp.spacePressed;
-        //         Debug.Log("spawnstate changed");
-        //     }
-        //
-        // }).Run();
 
         foreach (var input in SystemAPI.Query<RefRW<InputComp>>())
         {
