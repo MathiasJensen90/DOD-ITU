@@ -154,7 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabToSpawn: {fileID: 7454184495850660923, guid: 4d6696224e2dcb64ea5f1e3b76b334f8, type: 3}
   hasBuffer: 0
-  ExampleType: 1
+  ExampleType: 0
 --- !u!4 &336057218
 Transform:
   m_ObjectHideFlags: 0
