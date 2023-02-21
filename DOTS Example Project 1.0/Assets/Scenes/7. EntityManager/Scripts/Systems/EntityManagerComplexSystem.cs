@@ -7,7 +7,6 @@ using Unity.Transforms;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-[DisableAutoCreation]
 public partial struct EntityManagerComplexSystem: ISystem
 {
     public void OnCreate(ref SystemState state)
@@ -24,39 +23,41 @@ public partial struct EntityManagerComplexSystem: ISystem
     {
          var singleTon = SystemAPI.GetSingleton<ManagerSingeltonComponent>();
         if (singleTon.ExampleType != EntityManagerExample.Complex) return;
+        
+        var ecb = new EntityCommandBuffer(state.WorldUpdateAllocator);
 
         foreach (var (managersingleton, entity) in SystemAPI.Query<RefRW<ManagerSingeltonComponent>>().WithEntityAccess())
         {
-               if (Input.GetKeyDown(KeyCode.Alpha0))
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 Debug.Log("Number of entities in the world: " + state.EntityManager.Debug.EntityCount);
                 Debug.Log("Information about entity:" + state.EntityManager.Debug.GetEntityInfo(entity));
                 if (managersingleton.ValueRO.hasBuffer) Debug.Log("Buffer length: " + SystemAPI.GetBuffer<ListOfEntitiesCreatedComponent>(entity).Length);
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha1))
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 if (!managersingleton.ValueRO.hasBuffer)
                 {
                     Debug.Log("Added a buffer to the entity");
-                    state.EntityManager.AddBuffer<ListOfEntitiesCreatedComponent>(entity);
+                    ecb.AddBuffer<ListOfEntitiesCreatedComponent>(entity);
                     managersingleton.ValueRW.hasBuffer = true;
                 }
                 else
                 {
                     Debug.Log("removed buffer from entity");
-                    state.EntityManager.RemoveComponent<ListOfEntitiesCreatedComponent>(entity);
+                    ecb.RemoveComponent<ListOfEntitiesCreatedComponent>(entity);
                     managersingleton.ValueRW.hasBuffer = false;
                 }
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 if (managersingleton.ValueRO.hasBuffer)
                 {
                     Debug.Log("Spawned entity and added it to a a buffer so we can keep track of it");
                     
                     //spawn an entity from a prefab and cache it so we can set its data
-                    var entitySpawned = state.EntityManager.Instantiate(managersingleton.ValueRO.prefabToSpawn);
-                    state.EntityManager.SetComponentData(entitySpawned, new Translation{Value = Random.insideUnitSphere * 2 });
+                    var entitySpawned = ecb.Instantiate(managersingleton.ValueRO.prefabToSpawn);
+                    ecb.SetComponent(entitySpawned, new Translation{Value = Random.insideUnitSphere * 2 });
                     
                     //get buffer and add the instantiated entity to it
                     var buffer = SystemAPI.GetBuffer<ListOfEntitiesCreatedComponent>(entity);
@@ -68,16 +69,16 @@ public partial struct EntityManagerComplexSystem: ISystem
                 }
                
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            else if (Input.GetKeyDown(KeyCode.Alpha4))
             {
                 if (managersingleton.ValueRO.hasBuffer)
                 {
-                    var lengthOffBuffer = SystemAPI.GetBuffer<ListOfEntitiesCreatedComponent>(entity).Length - 1;
-                    if (lengthOffBuffer >= 0)
+                    var buffer = SystemAPI.GetBuffer<ListOfEntitiesCreatedComponent>(entity); 
+                    var bufferIndex = buffer.Length - 1;
+                    if (bufferIndex >= 0)
                     {
-                        state.EntityManager.DestroyEntity(SystemAPI.GetBuffer<ListOfEntitiesCreatedComponent>(entity)[lengthOffBuffer]
-                            .entity);
-                        SystemAPI.GetBuffer<ListOfEntitiesCreatedComponent>(entity).RemoveAt(lengthOffBuffer);
+                        ecb.DestroyEntity(buffer[bufferIndex].entity);
+                        buffer.RemoveAt(bufferIndex);
                     }
                     else
                     {
@@ -86,7 +87,7 @@ public partial struct EntityManagerComplexSystem: ISystem
                 }
 
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha4))
+            else if (Input.GetKeyDown(KeyCode.Alpha5))
             {
                 if (managersingleton.ValueRO.hasBuffer && SystemAPI.GetBuffer<ListOfEntitiesCreatedComponent>(entity).Length != 0)
                 {
@@ -96,13 +97,13 @@ public partial struct EntityManagerComplexSystem: ISystem
                         var localEntity = buffer[lengthOffBuffer].entity; 
                         if (!SystemAPI.HasComponent<NonUniformScale>(localEntity))
                         {
-                            state.EntityManager.AddComponent<NonUniformScale>(localEntity);
-                            state.EntityManager.AddComponentData(localEntity, new NonUniformScale {Value = new float3(1, 2, 1)});
+                            ecb.AddComponent<NonUniformScale>(localEntity);
+                            ecb.AddComponent(localEntity, new NonUniformScale {Value = new float3(1, 2, 1)});
                         }
                         else
                         {
                             var currentScale = SystemAPI.GetComponent<NonUniformScale>(localEntity).Value;
-                            state.EntityManager.AddComponentData(localEntity, new NonUniformScale {Value = currentScale * 2});
+                            ecb.AddComponent(localEntity, new NonUniformScale {Value = currentScale * 2});
                         }
                     
                     Debug.Log("Changed the scale of the entitties in the buffer");
@@ -113,5 +114,7 @@ public partial struct EntityManagerComplexSystem: ISystem
                 }
             }
         }
+        
+        ecb.Playback(state.EntityManager);
     }
 }

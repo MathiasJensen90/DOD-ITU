@@ -26,22 +26,8 @@ using UnityEngine;
 
             foreach (var (singelton, entity) in SystemAPI.Query<RefRW<ManagerSingeltonComponent>>().WithEntityAccess())
             {
-                if (Input.GetKeyDown(KeyCode.Alpha0))
-                {
-                    ecb.RemoveComponent<RotateTag>(entity);
-                }
+             
                 if (Input.GetKeyDown(KeyCode.Alpha1))
-                {
-                    ecb.AddComponent<RotateTag>(entity);
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha2))
-                {
-                    ecb.AddComponent(entity, new NonUniformScale
-                    {
-                        Value = new float3(2, 2, 2)
-                    });
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha3))
                 {
                   
                     Entity e = state.EntityManager.Instantiate(singelton.ValueRO.prefabToSpawn);
@@ -50,11 +36,51 @@ using UnityEngine;
                         Value = new float3(0, 1, 0)
                     });
                 }
+              
+            }
+            
+            foreach (var (rotation, entity) in SystemAPI.Query<RefRO<Rotation>>().WithEntityAccess().WithAll<RotateTag>())
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha2))
+                {
+                    Debug.Log("happening");
+                    ecb.RemoveComponent<RotateTag>(entity);
+                }
+         
+                if (Input.GetKeyDown(KeyCode.Alpha3))
+                {
+                    ecb.AddComponent(entity, new NonUniformScale
+                    {
+                        Value = new float3(2, 2, 2)
+                    });
+                }
                 if (Input.GetKeyDown(KeyCode.Alpha4))
                 {
                     ecb.DestroyEntity(entity);
                 }
             }
+            foreach (var (rotation, entity) in SystemAPI.Query<RefRO<Rotation>>().WithEntityAccess().WithNone<RotateTag>().WithAll<RotatingData>())
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha2))
+                {
+                    ecb.AddComponent<RotateTag>(entity);
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha3))
+                {
+                    ecb.AddComponent(entity, new NonUniformScale
+                    {
+                        Value = new float3(2, 2, 2)
+                    });
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha4))
+                {
+                    ecb.DestroyEntity(entity);
+                }
+            }
+
+            
+            ecb.Playback(state.EntityManager);
+            
         }
     }
 

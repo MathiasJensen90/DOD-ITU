@@ -94,7 +94,7 @@ public partial struct RotateJob2 : IJobEntity
 public partial struct RotateJob3 : IJobEntity
 {
     public float dt; 
-    public void Execute( [EntityIndexInQuery] int i,  ref Rotation rot)
+    public void Execute([ChunkIndexInQuery] int i,  ref Rotation rot)
     {
         var xRot = quaternion.RotateZ(80 * Mathf.Deg2Rad * dt);
         rot.Value = math.mul(rot.Value, xRot);
