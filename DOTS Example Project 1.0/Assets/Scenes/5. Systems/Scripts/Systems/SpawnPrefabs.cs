@@ -9,6 +9,7 @@ using Unity.Transforms;
 using UnityEngine;
 
 [DisableAutoCreation]
+
 public partial struct SpawnPrefabs : ISystem
 {
     //public BeginInitializationEntityCommandBufferSystem ecbSystem;

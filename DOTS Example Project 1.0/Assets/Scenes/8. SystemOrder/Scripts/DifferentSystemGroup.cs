@@ -2,14 +2,20 @@
 using UnityEngine;
 
     [UpdateInGroup(typeof(InitializationSystemGroup))]
-    public partial class DifferentSystemGroup : SystemBase
+    public partial struct DifferentSystemGroup : ISystem
     {
-        
-         protected override void OnCreate()
+
+        public void OnCreate(ref SystemState state)
         {
-            RequireForUpdate<SystemOrderSingleton>();
+            
         }
-        protected override void OnUpdate()
+
+        public void OnDestroy(ref SystemState state)
+        {
+            
+        }
+
+        public void OnUpdate(ref SystemState state)
         {
             
         }

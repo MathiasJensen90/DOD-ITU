@@ -2,15 +2,21 @@
 using UnityEngine;
 
 
-    public partial class SystemOrdering3 : SystemBase
+    public partial struct SystemOrdering3 : ISystem
     {
-        protected override void OnCreate()
+        public void OnCreate(ref SystemState state)
         {
-            RequireForUpdate<SystemOrderSingleton>();
+            
         }
-        protected override void OnUpdate()
+
+        public void OnDestroy(ref SystemState state)
+        {
+          
+        }
+
+        public void OnUpdate(ref SystemState state)
         {
             Debug.Log("Hello, I'm SystemOrdering3");
-            Enabled = false;
+            state.Enabled = false;
         }
     }

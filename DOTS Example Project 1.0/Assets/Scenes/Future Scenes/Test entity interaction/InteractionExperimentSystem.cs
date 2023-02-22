@@ -25,9 +25,12 @@ public partial struct InteractionExperimentSystem : ISystem
     {
         NativeArray<float3> distance = new NativeArray<float3>(3, Allocator.Temp);
 
-        foreach (var translation in SystemAPI.Query<Translation>().WithAll<PlayerInteractionTag>())
+        var dt = SystemAPI.Time.DeltaTime; 
+
+        foreach (var (translation, e) in SystemAPI.Query<Translation>().WithAll<PlayerInteractionTag>().WithEntityAccess())
         {
-            distance[0] = translation.Value;
+            
+            distance[0] = translation.Value + dt;
         }
         
         
