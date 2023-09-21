@@ -1,6 +1,7 @@
 ﻿using Unity.Entities;
 using UnityEngine;
 
+[RequireMatchingQueriesForUpdate]
 [UpdateAfter(typeof(SystemOrdering3))]
 public partial struct SystemOrdering2 : ISystem
     {
