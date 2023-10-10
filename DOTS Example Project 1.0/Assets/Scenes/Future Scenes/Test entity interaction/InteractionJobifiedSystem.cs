@@ -47,9 +47,9 @@ public partial struct InteractionJobifiedSystem : ISystem
 public partial struct EnemyWritePosJob : IJobEntity
 {
     public NativeArray<float3> enemyPos; 
-    public void Execute(in Translation trans)
+    public void Execute(in LocalTransform trans)
     {
-        enemyPos[0] = trans.Value;
+        enemyPos[0] = trans.Position;
     }
 }
 
@@ -58,10 +58,10 @@ public partial struct EnemyWritePosJob : IJobEntity
 public partial struct DistJobExample : IJobEntity
 {
     public NativeArray<float3> enemyPos; 
-    public void Execute(in Translation trans)
+    public void Execute(in LocalTransform trans)
     {
-        enemyPos[1] = trans.Value;
-        var dist = math.distance(trans.Value, enemyPos[0]);
+        enemyPos[1] = trans.Position;
+        var dist = math.distance(trans.Position, enemyPos[0]);
         Debug.Log($"{dist}");
     }
 }

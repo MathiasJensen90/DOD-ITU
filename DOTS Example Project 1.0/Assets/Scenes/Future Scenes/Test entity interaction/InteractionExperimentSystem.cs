@@ -27,16 +27,16 @@ public partial struct InteractionExperimentSystem : ISystem
 
         var dt = SystemAPI.Time.DeltaTime; 
 
-        foreach (var (translation, e) in SystemAPI.Query<Translation>().WithAll<PlayerInteractionTag>().WithEntityAccess())
+        foreach (var (translation, e) in SystemAPI.Query<RefRO<LocalTransform>>().WithAll<PlayerInteractionTag>().WithEntityAccess())
         {
             
-            distance[0] = translation.Value + dt;
+            distance[0] = translation.ValueRO.Position + dt;
         }
         
         
-        foreach (var translation in SystemAPI.Query<Translation>().WithAll<enemyInteractionTag>())
+        foreach (var translation in SystemAPI.Query<RefRO<LocalTransform>>().WithAll<enemyInteractionTag>())
         {
-            distance[1] = translation.Value;
+            distance[1] = translation.ValueRO.Position;
         }
 
         var dist = math.distance(distance[0], distance[1]);
