@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
-public struct AxisComparer : IComparer<Translation> 
+public struct AxisComparer : IComparer<LocalTransform> 
 {
-    public int Compare(Translation a, Translation b)
+    public int Compare(LocalTransform a, LocalTransform b)
     {
-        return a.Value.x.CompareTo(b.Value.x);
+        return a.Position.x.CompareTo(b.Position.x);
     }
 }

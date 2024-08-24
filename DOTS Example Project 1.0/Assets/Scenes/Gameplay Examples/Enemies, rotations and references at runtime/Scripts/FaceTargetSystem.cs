@@ -15,12 +15,12 @@ public partial class FaceTargetSystem : SystemBase
     protected override void OnUpdate()
     {
         float dt = SystemAPI.Time.DeltaTime; 
-       var translationArray = GetComponentLookup<Translation>(true);
+       var translationArray = GetComponentLookup<LocalTransform>(true);
 
        var rotateTowardsPlayerJob = new RotateTowardsPlayerJob
        {
            dt = dt,
-           translationArray = translationArray
+           transformArray = translationArray
        }.ScheduleParallel(Dependency);
 
        /*Entities.WithAll<ChaserTag>().ForEach((ref Rotation rotation, ref moveData moveData, in Translation trans, in TowerTarget target) =>
@@ -38,7 +38,7 @@ public partial class FaceTargetSystem : SystemBase
        var rotateTowardsNearestTargetJob = new RotateTowardsNearestEnemyJob
        {
            dt = dt,
-           translationArray = translationArray
+           localTransformArray = translationArray
        }.ScheduleParallel(rotateTowardsPlayerJob);
        /*Entities.WithAll<TowerTag>().ForEach((DynamicBuffer<EnemyTargetBuffer> enemyBuffer, ref Rotation rotation, ref moveData moveData, in Translation trans) =>
        {
@@ -76,16 +76,16 @@ public partial struct RotateTowardsPlayerJob : IJobEntity
 {
     public float dt;
     [ReadOnly]
-    public ComponentLookup<Translation> translationArray; 
+    public ComponentLookup<LocalTransform> transformArray; 
     
-    public void Execute(ref Rotation rotation, ref moveData moveData, in Translation trans, in TowerTarget target)
+    public void Execute(ref LocalTransform transform, ref moveData moveData, in TowerTarget target)
     {
-        var targetPos = translationArray[target.Value].Value;
-        var dir = targetPos - trans.Value;
+        var targetPos = transformArray[target.Value].Position;
+        var dir = targetPos - transform.Position;
         var normalisedDir = math.normalizesafe(dir);
 
         quaternion targetRot = quaternion.LookRotationSafe(normalisedDir, math.up());
-        rotation.Value = math.slerp(rotation.Value, targetRot, dt * moveData.rotationSpeed);
+        transform.Rotation = math.slerp(transform.Rotation , targetRot, dt * moveData.rotationSpeed);
     }
 }
 
@@ -94,17 +94,17 @@ public partial struct RotateTowardsPlayerJob : IJobEntity
 public partial struct RotateTowardsNearestEnemyJob : IJobEntity
 {
     [ReadOnly]
-    public ComponentLookup<Translation> translationArray;
+    public ComponentLookup<LocalTransform> localTransformArray;
     public float dt;
 
-    public void Execute(DynamicBuffer<EnemyTargetBuffer> enemyBuffer, ref Rotation rotation, ref moveData moveData, in Translation trans)
+    public void Execute(DynamicBuffer<EnemyTargetBuffer> enemyBuffer, ref LocalTransform localTrans, ref moveData moveData)
     {
         float closestDist = math.INFINITY;
         float3 targetPos = 0; 
         for (int i = 0; i < enemyBuffer.Length; i++)
         {
-            var enemyPos = translationArray[enemyBuffer[i].Value].Value;
-            var dist = math.distance(trans.Value, enemyPos);
+            var enemyPos = localTransformArray[enemyBuffer[i].Value].Position;
+            var dist = math.distance(localTrans.Position, enemyPos);
 
             if (dist < closestDist)
             {
@@ -112,9 +112,9 @@ public partial struct RotateTowardsNearestEnemyJob : IJobEntity
                 targetPos = enemyPos;
             } 
         }
-        var dir = targetPos - trans.Value;
+        var dir = targetPos - localTrans.Position;
         var normalisedDir = math.normalizesafe(dir);
         quaternion targetRot = quaternion.LookRotationSafe(normalisedDir, math.up());
-        rotation.Value = math.slerp(rotation.Value, targetRot, dt * moveData.rotationSpeed);
+        localTrans.Rotation = math.slerp(localTrans.Rotation, targetRot, dt * moveData.rotationSpeed);
     }
 }

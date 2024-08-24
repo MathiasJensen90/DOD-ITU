@@ -57,7 +57,7 @@ public partial struct EntityManagerComplexSystem: ISystem
                     
                     //spawn an entity from a prefab and cache it so we can set its data
                     var entitySpawned = ecb.Instantiate(managersingleton.ValueRO.prefabToSpawn);
-                    ecb.SetComponent(entitySpawned, new Translation{Value = Random.insideUnitSphere * 2 });
+                    ecb.SetComponent(entitySpawned, new LocalTransform{Position = Random.insideUnitSphere * 2 });
                     
                     //get buffer and add the instantiated entity to it
                     var buffer = SystemAPI.GetBuffer<ListOfEntitiesCreatedComponent>(entity);
@@ -87,32 +87,32 @@ public partial struct EntityManagerComplexSystem: ISystem
                 }
 
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha5))
-            {
-                if (managersingleton.ValueRO.hasBuffer && SystemAPI.GetBuffer<ListOfEntitiesCreatedComponent>(entity).Length != 0)
-                {
-                    var buffer = SystemAPI.GetBuffer<ListOfEntitiesCreatedComponent>(entity);
-                    int lengthOffBuffer = buffer.Length - 1;
-             
-                        var localEntity = buffer[lengthOffBuffer].entity; 
-                        if (!SystemAPI.HasComponent<NonUniformScale>(localEntity))
-                        {
-                            ecb.AddComponent<NonUniformScale>(localEntity);
-                            ecb.AddComponent(localEntity, new NonUniformScale {Value = new float3(1, 2, 1)});
-                        }
-                        else
-                        {
-                            var currentScale = SystemAPI.GetComponent<NonUniformScale>(localEntity).Value;
-                            ecb.AddComponent(localEntity, new NonUniformScale {Value = currentScale * 2});
-                        }
-                    
-                    Debug.Log("Changed the scale of the entitties in the buffer");
-                }
-                else
-                {
-                    Debug.LogWarning("You have not added a buffer yet, or the buffer is empty");
-                }
-            }
+            // else if (Input.GetKeyDown(KeyCode.Alpha5))
+            // {
+            //     if (managersingleton.ValueRO.hasBuffer && SystemAPI.GetBuffer<ListOfEntitiesCreatedComponent>(entity).Length != 0)
+            //     {
+            //         var buffer = SystemAPI.GetBuffer<ListOfEntitiesCreatedComponent>(entity);
+            //         int lengthOffBuffer = buffer.Length - 1;
+            //  
+            //             var localEntity = buffer[lengthOffBuffer].entity; 
+            //             if (!SystemAPI.HasComponent<NonUniformScale>(localEntity))
+            //             {
+            //                 ecb.AddComponent<NonUniformScale>(localEntity);
+            //                 ecb.AddComponent(localEntity, new NonUniformScale {Value = new float3(1, 2, 1)});
+            //             }
+            //             else
+            //             {
+            //                 var currentScale = SystemAPI.GetComponent<NonUniformScale>(localEntity).Value;
+            //                 ecb.AddComponent(localEntity, new NonUniformScale {Value = currentScale * 2});
+            //             }
+            //         
+            //         Debug.Log("Changed the scale of the entitties in the buffer");
+            //     }
+            //     else
+            //     {
+            //         Debug.LogWarning("You have not added a buffer yet, or the buffer is empty");
+            //     }
+            // }
         }
         
         ecb.Playback(state.EntityManager);

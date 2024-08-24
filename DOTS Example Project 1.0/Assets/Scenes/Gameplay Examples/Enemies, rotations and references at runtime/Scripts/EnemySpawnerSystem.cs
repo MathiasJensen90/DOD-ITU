@@ -59,20 +59,23 @@ public partial struct EnemeySpawnJob : IJobEntity
 {
     public float dt;
     public EntityCommandBuffer ecb; 
-    public void Execute(ref ChaserSpawner chaserSpawn, in Translation trans)
+    public void Execute(ref ChaserSpawner chaserSpawn, in LocalTransform trans)
     {
         chaserSpawn.timer -= dt;
         if (chaserSpawn.timer < 0)
         {
             chaserSpawn.timer = chaserSpawn.timerDelay;
             Entity e = ecb.Instantiate(chaserSpawn.chaser); 
-            ecb.SetComponent(e, new Translation
-            {
-                Value = trans.Value + new float3(
-                    chaserSpawn.random.NextFloat(-11, 11),
-                    0,
-                    chaserSpawn.random.NextFloat(-8, 8))       
-            });
+            
+           ecb.SetComponent(e, new LocalTransform
+           {
+               Position = trans.Position + new float3(
+                   chaserSpawn.random.NextFloat(-11, 11),
+                   0,
+                   chaserSpawn.random.NextFloat(-8, 8)), 
+               Rotation = quaternion.identity,
+               Scale = 1f
+           });
             ecb.SetComponent(e, new moveData
             {
                 moveSpeed = chaserSpawn.random.NextFloat(2, 6),

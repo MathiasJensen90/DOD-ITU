@@ -31,15 +31,15 @@ using UnityEngine;
                 {
                   
                     Entity e = state.EntityManager.Instantiate(singelton.ValueRO.prefabToSpawn);
-                    ecb.SetComponent(e, new Translation
+                    ecb.SetComponent(e, new LocalTransform
                     {
-                        Value = new float3(0, 1, 0)
+                        Position = new float3(0, 1, 0)
                     });
                 }
               
             }
             
-            foreach (var (rotation, entity) in SystemAPI.Query<RefRO<Rotation>>().WithEntityAccess().WithAll<RotateTag>())
+            foreach (var (rotation, entity) in SystemAPI.Query<RefRO<LocalTransform>>().WithEntityAccess().WithAll<RotateTag>())
             {
                 if (Input.GetKeyDown(KeyCode.Alpha2))
                 {
@@ -49,9 +49,9 @@ using UnityEngine;
          
                 if (Input.GetKeyDown(KeyCode.Alpha3))
                 {
-                    ecb.AddComponent(entity, new NonUniformScale
+                    ecb.AddComponent(entity, new LocalTransform
                     {
-                        Value = new float3(2, 2, 2)
+                        Scale = 2
                     });
                 }
                 if (Input.GetKeyDown(KeyCode.Alpha4))
@@ -59,7 +59,7 @@ using UnityEngine;
                     ecb.DestroyEntity(entity);
                 }
             }
-            foreach (var (rotation, entity) in SystemAPI.Query<RefRO<Rotation>>().WithEntityAccess().WithNone<RotateTag>().WithAll<RotatingData>())
+            foreach (var (rotation, entity) in SystemAPI.Query<RefRO<LocalTransform>>().WithEntityAccess().WithNone<RotateTag>().WithAll<RotatingData>())
             {
                 if (Input.GetKeyDown(KeyCode.Alpha2))
                 {
@@ -67,9 +67,9 @@ using UnityEngine;
                 }
                 if (Input.GetKeyDown(KeyCode.Alpha3))
                 {
-                    ecb.AddComponent(entity, new NonUniformScale
+                    ecb.AddComponent(entity, new LocalTransform
                     {
-                        Value = new float3(2, 2, 2)
+                        Scale = 2
                     });
                 }
                 if (Input.GetKeyDown(KeyCode.Alpha4))

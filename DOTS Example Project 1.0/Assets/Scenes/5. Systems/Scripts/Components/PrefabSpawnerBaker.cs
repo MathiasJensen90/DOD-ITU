@@ -15,7 +15,7 @@ public class PrefabSpawnerBaker : MonoBehaviour
         {
             AddComponent(new SpawnComponent
             {
-                prefabToSpawn = GetEntity(authoring.prefabToSpawn),
+                prefabToSpawn = GetEntity(authoring.prefabToSpawn, TransformUsageFlags.Dynamic),
                 cooldownAmount = authoring.cooldownAmount,
                 cooldownTimer = authoring.cooldownTimer,
                 maxSpawnLimit = authoring.maxSpawnLimit,

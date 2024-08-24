@@ -23,9 +23,9 @@ public partial class BulletMovementSystem : SystemBase
 public partial struct bulletMoveJob : IJobEntity
 {
     public float dt;
-    public void Execute(ref Translation trans, in LocalToWorld ltw, in Bullet bullet)
+    public void Execute(ref LocalTransform trans, in LocalToWorld ltw, in Bullet bullet)
     {
         var forwardDir = ltw.Forward;
-        trans.Value += forwardDir * dt * bullet.speed;
+        trans.Position += forwardDir * dt * bullet.speed;
     }
 }

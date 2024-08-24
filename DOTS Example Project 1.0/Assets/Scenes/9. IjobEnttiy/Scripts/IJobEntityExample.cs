@@ -42,13 +42,13 @@ public partial class IJobEntityExample : SystemBase
 }
 
 
-[WithAny(typeof(CompositeScale))]
+//[WithAny(typeof(localsc))]
 public partial struct RotationJob : IJobEntity
 {
     public float deltaTime;
-    public void Execute(Entity e, ref Rotation rot, in JobentityData jobentityData)
+    public void Execute(Entity e, ref LocalTransform rot, in JobentityData jobentityData)
     {
-        rot.Value = math.mul(math.normalize(rot.Value),
+        rot.Rotation = math.mul(math.normalize(rot.Rotation),
             quaternion.AxisAngle(math.up(), math.radians(jobentityData.rotationValue) * deltaTime));
     }
 }

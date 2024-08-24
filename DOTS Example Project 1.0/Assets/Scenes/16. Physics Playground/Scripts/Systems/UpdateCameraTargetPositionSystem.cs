@@ -18,8 +18,8 @@ public partial class UpdateCameraTargetPositionSystem : SystemBase
 [WithAll(typeof(PhysicsPlayer))]
 public partial struct UpdateCameraJob : IJobEntity
 {
-    public void Execute(ref Translation translation)
+    public void Execute(ref LocalTransform transform)
     {
-        SimpleCameraFollow.Instance.UpdateTargetPosition(translation.Value);
+        SimpleCameraFollow.Instance.UpdateTargetPosition(transform.Position);
     }
 }

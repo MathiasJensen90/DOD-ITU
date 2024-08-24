@@ -8,7 +8,8 @@ public class TagComponent3Baker : MonoBehaviour
     {
         public override void Bake(TagComponent3Baker authoring)
         {
-            AddComponent<TagComponent3>();
+            var entity = GetEntity(TransformUsageFlags.Dynamic);
+            AddComponent<TagComponent3>(entity);
         }
     }
 }

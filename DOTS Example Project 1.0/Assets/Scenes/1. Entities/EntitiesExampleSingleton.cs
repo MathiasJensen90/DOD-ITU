@@ -12,7 +12,8 @@ public class EntitiesExampleSingleton : MonoBehaviour
     {
         public override void Bake(EntitiesExampleSingleton authoring)
         {
-            AddComponent<EntitiesExampleSingletonTag>();
+            var entity = GetEntity(TransformUsageFlags.Dynamic);
+            AddComponent<EntitiesExampleSingletonTag>(entity);
         }
     }
 }

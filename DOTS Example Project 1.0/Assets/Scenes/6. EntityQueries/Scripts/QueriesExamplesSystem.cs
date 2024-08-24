@@ -27,7 +27,7 @@ public partial struct QueriesExamplesSystem : ISystem
         float dt = SystemAPI.Time.DeltaTime;
         
         //this query is the same as the one below it
-        EntityQuery query = state.GetEntityQuery(ComponentType.ReadWrite<Translation>(), ComponentType.ReadOnly<Rotation>());
+        EntityQuery query = state.GetEntityQuery(ComponentType.ReadWrite<LocalTransform>(), ComponentType.ReadOnly<LocalTransform>());
 
         new MovementJob().Schedule();
         
@@ -49,7 +49,7 @@ public partial struct QueriesExamplesSystem : ISystem
         EntityQueryDesc myQueryDesc = new EntityQueryDesc
         {
             Any = new[] {ComponentType.ReadOnly<TagComponent3>(), ComponentType.ReadOnly<TagComponent2>()},
-            All = new[] {ComponentType.ReadWrite<Rotation>()},
+            All = new[] {ComponentType.ReadWrite<LocalTransform>()},
         
         };
         
@@ -62,9 +62,9 @@ public partial struct QueriesExamplesSystem : ISystem
 
 public partial struct MovementJob : IJobEntity
 {
-    public void Execute(ref Translation trans, in Rotation rot)
+    public void Execute(ref LocalTransform trans)
     {
-        trans.Value += new float3(0, 0.001f, 0);
+        trans.Position += new float3(0, 0.001f, 0);
     }
 }
 
@@ -72,10 +72,10 @@ public partial struct MovementJob : IJobEntity
 public partial struct RotateJob1 : IJobEntity
 {
     public float dt; 
-    public void Execute( ref Rotation rot)
+    public void Execute( ref LocalTransform trans)
     {
         var xRot = quaternion.RotateX(80 * Mathf.Deg2Rad * dt);
-        rot.Value = math.mul(rot.Value, xRot);
+        trans.Rotation = math.mul(trans.Rotation, xRot);
     }
 }
 [WithAll( typeof(TagComponent2))]
@@ -83,10 +83,10 @@ public partial struct RotateJob1 : IJobEntity
 public partial struct RotateJob2 : IJobEntity
 {
     public float dt; 
-    public void Execute( ref Rotation rot)
+    public void Execute( ref LocalTransform trans)
     {
         var xRot = quaternion.RotateY(80 * Mathf.Deg2Rad * dt);
-        rot.Value = math.mul(rot.Value, xRot);
+        trans.Rotation = math.mul(trans.Rotation, xRot);
     }
 }
 
@@ -94,9 +94,9 @@ public partial struct RotateJob2 : IJobEntity
 public partial struct RotateJob3 : IJobEntity
 {
     public float dt; 
-    public void Execute([ChunkIndexInQuery] int i,  ref Rotation rot)
+    public void Execute([ChunkIndexInQuery] int i,  ref LocalTransform transform)
     {
         var xRot = quaternion.RotateZ(80 * Mathf.Deg2Rad * dt);
-        rot.Value = math.mul(rot.Value, xRot);
+        transform.Rotation = math.mul(transform.Rotation, xRot);
     }
 }

@@ -6,45 +6,47 @@ using UnityEngine;
 
 
 [DisableAutoCreation]
-public partial class CommonFunctionsExample : SystemBase 
+public partial struct CommonFunctionsExample : ISystem 
 {
-    protected override void OnUpdate()
+    public void OnUpdate(ref SystemState state)
     {
-        ComponentLookup<Rotation> rotations = GetComponentLookup<Rotation>();
-        ComponentLookup<Translation> translations = GetComponentLookup<Translation>(true);
+        ComponentLookup<LocalTransform> localTrans = SystemAPI.GetComponentLookup<LocalTransform>();
+        //ComponentLookup<LocalTransform> rotations = GetComponentLookup<Rotation>();
+        //ComponentLookup<Translation> translations = GetComponentLookup<Translation>(true);
         
-        EntityQuery query = GetEntityQuery(ComponentType.Exclude<Bullet>(), ComponentType.ReadOnly<Translation>());
+        EntityQuery query = state.GetEntityQuery(ComponentType.Exclude<Bullet>(), ComponentType.ReadOnly<LocalTransform>());
         var entityArray = query.ToEntityArray(Allocator.Persistent);
-        var componetArray = query.ToComponentDataArray<Translation>(Allocator.Persistent);
+        var componetArray = query.ToComponentDataArray<LocalTransform>(Allocator.Persistent);
 
-        Entity newEntity = EntityManager.CreateEntity();
-        bool hasRot = rotations.HasComponent(newEntity);
+        Entity newEntity = state.EntityManager.CreateEntity(); 
+        bool hasRot = localTrans.HasComponent(newEntity);
         
-        EntityManager.DestroyEntity(newEntity);
+        state.EntityManager.DestroyEntity(newEntity);
 
         if (newEntity == Entity.Null)
         {
-            Entity SecondEntity = EntityManager.CreateEntity();
+            Entity SecondEntity = state.EntityManager.CreateEntity(); 
         }
         
-        if (rotations.TryGetComponent(newEntity, out Rotation rotComp))
+        if (localTrans.TryGetComponent(newEntity, out LocalTransform trans))
         {
-            rotComp.Value = new quaternion(1, 1, 1, 1);
+            trans.Rotation = new quaternion(1, 1, 1, 1);
         };
 
         var oneEntity = SystemAPI.GetSingletonEntity<PhysicsPlayer>();
         var oneComp = SystemAPI.GetSingleton<Bullet>();
     }
+    
 }
 
 public partial struct BlandJob : IJobEntity
 {
-    [ReadOnly] public ComponentLookup<Translation> translations;
+    [ReadOnly] public ComponentLookup<LocalTransform> transform;
     public Entity eRef;
     
-    public void Execute(ref Translation trans)
+    public void Execute(ref LocalTransform trans)
     {
-        trans.Value = translations[eRef].Value; 
+        trans.Position = transform[eRef].Position; 
 
     }
 }

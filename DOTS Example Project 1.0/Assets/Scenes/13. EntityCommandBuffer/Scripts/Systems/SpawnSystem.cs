@@ -19,7 +19,7 @@ public partial class SpawnSystem : SystemBase
         var ecb = new EntityCommandBuffer(Allocator.TempJob);
 
 
-        Entities.ForEach((ref Translation trans) =>
+        Entities.ForEach((ref LocalTransform trans) =>
         {
 
         }).Run();
@@ -32,7 +32,7 @@ public partial class SpawnSystem : SystemBase
                 for (int j = 0; j < ecbSingleton.spawnAmount; j++)
                 {
                     var e = ecb.Instantiate(ecbSingleton.prefabTospawn);
-                    ecb.AddComponent(e, new Translation {Value = new float3(i * 2, 0, j * 2)});
+                    ecb.AddComponent(e, new LocalTransform {Position = new float3(i * 2, 0, j * 2)});
                 }
             }
         }).Schedule();

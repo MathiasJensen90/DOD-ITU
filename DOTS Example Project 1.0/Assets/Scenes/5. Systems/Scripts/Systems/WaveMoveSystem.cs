@@ -31,10 +31,10 @@ public partial struct WaveMoveSystem : ISystem
 public partial struct SinMovementJob : IJobEntity
 {
     public float elapsedTime;
-    public void Execute(ref Translation trans, in SinWaveComponent waveData)
+    public void Execute(ref LocalTransform trans, in SinWaveComponent waveData)
     {
         var waveMovement = waveData.amplitude * math.sin(elapsedTime * waveData.frequency);
-        trans.Value = new float3(trans.Value.x, waveMovement, trans.Value.z);
+        trans.Position = new float3(trans.Position.x, waveMovement, trans.Position.z);
     }
 }
 

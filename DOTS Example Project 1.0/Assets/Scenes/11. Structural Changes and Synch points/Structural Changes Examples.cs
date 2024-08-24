@@ -15,20 +15,19 @@ public partial class StructuralChangesExample : SystemBase
     protected override void OnUpdate()
     {
         
-         Entities.WithNone<StructuralChangesComp>().ForEach((Entity entity, ref Translation trans) =>
+         Entities.WithNone<StructuralChangesComp>().ForEach((Entity entity, ref LocalTransform trans) =>
         {
             EntityManager.AddComponent<StructuralChangesComp>(entity);
             Debug.Log("run once");
             
-            EntityManager.RemoveComponent<Translation>(entity);
+            EntityManager.RemoveComponent<LocalTransform>(entity);
             var createdEntity = EntityManager.CreateEntity();
             EntityManager.DestroyEntity(createdEntity);
         }).WithStructuralChanges().Run();
         
-        Entities.ForEach((Entity entity, ref Translation trans) =>
+        Entities.ForEach((Entity entity, ref LocalTransform trans) =>
         {
             var refToMonobehavior = MonoBehaviorExample.Instance; 
-
         }).WithoutBurst().Run();
         
 

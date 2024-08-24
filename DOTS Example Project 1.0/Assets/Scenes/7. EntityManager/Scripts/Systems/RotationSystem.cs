@@ -24,11 +24,11 @@ public partial struct RotationSystem : ISystem
     {
         float dt = SystemAPI.Time.DeltaTime;
 
-        foreach (var (rot, rotData) in SystemAPI.Query<RefRW<Rotation>, RefRO<RotatingData>>().WithNone<StopRotatingTag>().WithAll<RotateTag>())
+        foreach (var (rot, rotData) in SystemAPI.Query<RefRW<LocalTransform>, RefRO<RotatingData>>().WithNone<StopRotatingTag>().WithAll<RotateTag>())
         {
             var xRot = quaternion.RotateX( rotData.ValueRO.Value * Mathf.Deg2Rad * dt);
             
-            rot.ValueRW.Value = math.mul(rot.ValueRO.Value, xRot);
+            rot.ValueRW.Rotation = math.mul(rot.ValueRO.Rotation, xRot);
         }
         
     }

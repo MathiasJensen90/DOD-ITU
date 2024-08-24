@@ -8,7 +8,8 @@ public class BufferOfEntitiesCreatedBaker : MonoBehaviour
     {
         public override void Bake(BufferOfEntitiesCreatedBaker authoring)
         {
-            AddBuffer<ListOfEntitiesCreatedComponent>();
+            var entity = GetEntity(TransformUsageFlags.Dynamic);
+            AddBuffer<ListOfEntitiesCreatedComponent>(entity);
         }
     }
 }

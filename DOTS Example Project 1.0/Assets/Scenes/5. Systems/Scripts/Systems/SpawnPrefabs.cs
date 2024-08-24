@@ -66,9 +66,9 @@ public partial struct SpawnJob : IJobEntity
             spawnComp.cooldownTimer = spawnComp.cooldownAmount;
             spawnComp.numbOfSpawnedEntities++;
             var prefabEntity = spawnComp.prefabToSpawn;
-            ecb.SetComponent(prefabEntity, new Translation
+            ecb.SetComponent(prefabEntity, new LocalTransform
             {
-                Value = new float3(0, 0, 1.5f * spawnComp.numbOfSpawnedEntities)
+                Position = new float3(0, 0, 1.5f * spawnComp.numbOfSpawnedEntities)
             });
             ecb.Instantiate(prefabEntity);
         }

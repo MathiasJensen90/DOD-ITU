@@ -8,7 +8,8 @@ public class QuerySingletonBaker : MonoBehaviour
     {
         public override void Bake(QuerySingletonBaker authoring)
         {
-            AddComponent<QuerySingleton>();
+            var entity = GetEntity(TransformUsageFlags.Dynamic);
+            AddComponent<QuerySingleton>(entity);
         }
     }
 }

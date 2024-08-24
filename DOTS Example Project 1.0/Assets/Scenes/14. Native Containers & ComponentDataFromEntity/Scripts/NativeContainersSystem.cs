@@ -18,11 +18,11 @@ public partial class NativeContainersSystem : SystemBase
        Entities.ForEach((Entity entity, ref SingletonComponent1 singletonComp) =>
        {
            var targetEntity = allEntitieswithDivereComp[0];
-           var refTranslation = SystemAPI.GetComponent<Translation>(targetEntity).Value;
+           var refTranslation = SystemAPI.GetComponent<LocalTransform>(targetEntity).Position;
 
-           EntityManager.SetComponentData(targetEntity, new Translation
+           EntityManager.SetComponentData(targetEntity, new LocalTransform
            {
-               Value = refTranslation
+               Position = refTranslation
            });
            
        }).WithoutBurst().Run();

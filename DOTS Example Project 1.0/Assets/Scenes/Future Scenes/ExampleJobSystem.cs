@@ -71,13 +71,13 @@ public struct AnotherJob : IJob
 }
 
 [BurstCompile]
-public struct IJObEntitiess : IJobEntity
+public partial struct IJObEntitiess : IJobEntity
 {
     public float time; 
-    public void Execute(Translation trans)
+    public void Execute(LocalTransform trans)
     {
-        var pos = trans.Value;
-        trans.Value = new float3(pos.x, math.PI * math.sin(pos.x + pos.z + time), pos.z) ;
+        var pos = trans.Position;
+        trans.Position = new float3(pos.x, math.PI * math.sin(pos.x + pos.z + time), pos.z) ;
 
     }
 }
