@@ -33,7 +33,9 @@ using UnityEngine;
                     Entity e = state.EntityManager.Instantiate(singelton.ValueRO.prefabToSpawn);
                     ecb.SetComponent(e, new LocalTransform
                     {
-                        Position = new float3(0, 1, 0)
+                        Position = new float3(0, 1, 0),
+                        Rotation = quaternion.identity,
+                        Scale = 1
                     });
                 }
               
@@ -48,7 +50,7 @@ using UnityEngine;
                 }
          
                 if (Input.GetKeyDown(KeyCode.Alpha3))
-                {
+                { 
                     ecb.AddComponent(entity, new LocalTransform
                     {
                         Scale = 2

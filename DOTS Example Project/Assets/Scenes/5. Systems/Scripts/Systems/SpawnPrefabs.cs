@@ -66,7 +66,9 @@ public partial struct SpawnJob : IJobEntity
             var prefabEntity = spawnComp.prefabToSpawn;
             ecb.SetComponent(prefabEntity, new LocalTransform
             {
-                Position = new float3(0, 0, 1.5f * spawnComp.numbOfSpawnedEntities)
+                Position = new float3(0, 0, 1.5f * spawnComp.numbOfSpawnedEntities),
+                Rotation = quaternion.identity,
+                Scale = 1
             });
             ecb.Instantiate(prefabEntity);
         }

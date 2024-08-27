@@ -27,7 +27,7 @@ public partial struct QueriesExamplesSystem : ISystem
         float dt = SystemAPI.Time.DeltaTime;
         
         //this query is the same as the one below it
-        EntityQuery query = state.GetEntityQuery(ComponentType.ReadWrite<LocalTransform>(), ComponentType.ReadOnly<LocalTransform>());
+        EntityQuery query = state.GetEntityQuery(ComponentType.ReadWrite<LocalTransform>());
 
         new MovementJob().Schedule();
         
