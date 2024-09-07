@@ -16,7 +16,7 @@ MonoBehaviour:
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 32
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -55,7 +55,7 @@ Material:
     - Vector1_f520d096ac8342afbe4f7d2e0597d9c9: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - disolveRef: 0.318
+    - disolveRef: 0
     m_Colors:
     - Color_e85537cdbac34dd694ab0417698a3515: {r: 11.984314, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
