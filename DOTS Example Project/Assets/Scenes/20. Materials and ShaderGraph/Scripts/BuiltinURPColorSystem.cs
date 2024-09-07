@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Rendering;
@@ -9,10 +10,12 @@ using UnityEngine;
 
 public partial struct BuiltinURPColorSystemg : ISystem
 {
+    [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
-        //state.RequireForUpdate<SystemExampleSingleton>();
+        state.RequireForUpdate<ShaderSingletonComp>();
     }
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         float elapsedTime = (float)SystemAPI.Time.ElapsedTime;
@@ -24,6 +27,7 @@ public partial struct BuiltinURPColorSystemg : ISystem
     }
 }
 
+[BurstCompile]
 public partial struct AffectBuiltInURPProperties : IJobEntity
 {
     public float elapsedTime; 

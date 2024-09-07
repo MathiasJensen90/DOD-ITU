@@ -6,12 +6,16 @@ using Unity.Rendering;
 using UnityEngine;
 class MyMaterialAuthoring : MonoBehaviour
 {
+    public Vector3 color; 
     class baker : Baker<MyMaterialAuthoring>
     {
         public override void Bake(MyMaterialAuthoring authoring)
         {
             var entity = GetEntity(TransformUsageFlags.Renderable);
-            AddComponent<MyMaterial>(entity);
+            AddComponent(entity, new MyMaterial
+            {
+                Value = new float4(authoring.color, 1)
+            });
         }
     }
 }
