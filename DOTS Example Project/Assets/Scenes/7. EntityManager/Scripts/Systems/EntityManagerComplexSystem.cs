@@ -14,11 +14,6 @@ public partial struct EntityManagerComplexSystem: ISystem
         state.RequireForUpdate<ManagerSingeltonComponent>();
     }
 
-    public void OnDestroy(ref SystemState state)
-    {
-        
-    }
-
     public void OnUpdate(ref SystemState state)
     {
          var singleTon = SystemAPI.GetSingleton<ManagerSingeltonComponent>();
