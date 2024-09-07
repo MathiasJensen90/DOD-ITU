@@ -17,7 +17,6 @@ public partial struct SystemOrdering2 : ISystem
 
         public void OnUpdate(ref SystemState state)
         {
-            Debug.Log("Hello, I'm SystemOrdering2");
-            state.Enabled = false;
+          
         }
     }

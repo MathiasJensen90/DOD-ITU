@@ -19,7 +19,6 @@ public partial struct SystemOrderExample : ISystem
 
     public void OnUpdate(ref SystemState state)
     {
-        Debug.Log("Hello, I'm SystemOrdering");
-        state.Enabled = false;
+       
     }
 }

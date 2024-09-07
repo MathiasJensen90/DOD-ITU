@@ -1,7 +1,7 @@
 ﻿using Unity.Entities;
 using UnityEngine;
 
-
+    //[UpdateInGroup(typeof(InitializationSystemGroup))]
     public partial struct SystemOrdering3 : ISystem
     {
         public void OnCreate(ref SystemState state)
@@ -16,7 +16,6 @@ using UnityEngine;
 
         public void OnUpdate(ref SystemState state)
         {
-            Debug.Log("Hello, I'm SystemOrdering3");
             state.Enabled = false;
         }
     }
