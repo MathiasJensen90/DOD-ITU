@@ -5,7 +5,7 @@ using UnityEngine;
 public class PrefabSpawnerBaker : MonoBehaviour 
 {
     public GameObject prefabToSpawn;
-    public float cooldownTimer;
+    //public float cooldownTimer;
     public float cooldownAmount;
     public int maxSpawnLimit;
 
@@ -18,7 +18,7 @@ public class PrefabSpawnerBaker : MonoBehaviour
             {
                 prefabToSpawn = GetEntity(authoring.prefabToSpawn, TransformUsageFlags.Dynamic),
                 cooldownAmount = authoring.cooldownAmount,
-                cooldownTimer = authoring.cooldownTimer,
+                cooldownTimer = 0,
                 maxSpawnLimit = authoring.maxSpawnLimit,
             });
             AddComponent<InputComp>(entity);

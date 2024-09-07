@@ -168,7 +168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabToSpawn: {fileID: 5740926816328739807, guid: fdc29c0b094eb5a47a79fcdc8ba5cd0d, type: 3}
   cooldownTimer: 1
-  cooldownAmount: 0.4
+  cooldownAmount: 1.2
   maxSpawnLimit: 12
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
