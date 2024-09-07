@@ -8,12 +8,12 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
-
+[DisableAutoCreation]
 public partial class ExampleJobSystems : SystemBase
 {
     protected override void OnCreate()
     {
-       RequireForUpdate<IJobSingleton>();
+       //RequireForUpdate<IJobSingleton>();
     }
 
     protected override void OnUpdate()
