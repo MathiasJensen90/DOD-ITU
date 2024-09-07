@@ -7,49 +7,72 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
-public partial class EnemySpawnerSystem : SystemBase
+public partial struct EnemySpawnerSystem : ISystem
 {
-    protected override void OnCreate()
+    [BurstCompile]
+    public void OnCreate(ref SystemState state)
     {
-        RequireForUpdate<GameplayInteractionSingleton>();
+        state.RequireForUpdate<GameplayInteractionSingleton>();
     }
 
-    protected override void OnUpdate()
+    //[BurstCompile]
+    public void OnUpdate(ref SystemState state)
     {
         var dt = SystemAPI.Time.DeltaTime; 
-        var ecb = new EntityCommandBuffer(World.UpdateAllocator.ToAllocator);
+        var ecb = new EntityCommandBuffer(state.WorldUpdateAllocator);
 
         new EnemeySpawnJob
         {
             dt = dt,
             ecb = ecb
         }.Run();
-        /* Entities.ForEach((Entity entity, ref ChaserSpawner chaserSpawn, in Translation trans) =>
-         {
-             chaserSpawn.timer -= dt;
-             if (chaserSpawn.timer < 0)
-             {
-                 chaserSpawn.timer = chaserSpawn.timerDelay;
-                 Entity e = EntityManager.Instantiate(chaserSpawn.chaser); 
-                 EntityManager.SetComponentData(e, new Translation
-                 {
-                     Value = trans.Value + new float3(
-                         chaserSpawn.random.NextFloat(-11, 11),
-                         0,
-                         chaserSpawn.random.NextFloat(-8, 8))       
-                 });
-                 EntityManager.SetComponentData(e, new moveData
-                 {
-                     moveSpeed = chaserSpawn.random.NextFloat(2, 6),
-                     rotationSpeed = chaserSpawn.random.NextFloat(.3f, .7f)
-                 });
-             }
-         }).WithStructuralChanges().Run();
-         */
-        
-        ecb.Playback(EntityManager);
+        ecb.Playback(state.EntityManager);
     }
 }
+
+// public partial class EnemySpawnerSystem1 : SystemBase
+// {
+//     protected override void OnCreate()
+//     {
+//         RequireForUpdate<GameplayInteractionSingleton>();
+//     }
+//
+//     protected override void OnUpdate()
+//     {
+//         var dt = SystemAPI.Time.DeltaTime; 
+//         var ecb = new EntityCommandBuffer(World.UpdateAllocator.ToAllocator);
+//
+//         new EnemeySpawnJob
+//         {
+//             dt = dt,
+//             ecb = ecb
+//         }.Run();
+//         /* Entities.ForEach((Entity entity, ref ChaserSpawner chaserSpawn, in Translation trans) =>
+//          {
+//              chaserSpawn.timer -= dt;
+//              if (chaserSpawn.timer < 0)
+//              {
+//                  chaserSpawn.timer = chaserSpawn.timerDelay;
+//                  Entity e = EntityManager.Instantiate(chaserSpawn.chaser); 
+//                  EntityManager.SetComponentData(e, new Translation
+//                  {
+//                      Value = trans.Value + new float3(
+//                          chaserSpawn.random.NextFloat(-11, 11),
+//                          0,
+//                          chaserSpawn.random.NextFloat(-8, 8))       
+//                  });
+//                  EntityManager.SetComponentData(e, new moveData
+//                  {
+//                      moveSpeed = chaserSpawn.random.NextFloat(2, 6),
+//                      rotationSpeed = chaserSpawn.random.NextFloat(.3f, .7f)
+//                  });
+//              }
+//          }).WithStructuralChanges().Run();
+//          */
+//         
+//         ecb.Playback(EntityManager);
+//     }
+// }
 
 
 

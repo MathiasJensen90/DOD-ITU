@@ -1,73 +1,149 @@
 using Unity.Burst;
 using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
 
-public partial class FaceTargetSystem : SystemBase
+public partial struct FaceTargetSystem : ISystem
 {
-    protected override void OnCreate()
+    [BurstCompile]
+    public void OnCreate(ref SystemState state)
     {
-        RequireForUpdate<GameplayInteractionSingleton>();
+        state.RequireForUpdate<GameplayInteractionSingleton>();
     }
 
-    protected override void OnUpdate()
+    //[BurstCompile]
+    public void OnUpdate(ref SystemState state)
     {
-        float dt = SystemAPI.Time.DeltaTime; 
-       var translationArray = GetComponentLookup<LocalTransform>(true);
+        float dt = SystemAPI.Time.DeltaTime;
+        var translationArray = state.GetComponentLookup<LocalTransform>(true);
+        var enemyQuery =
+            state.GetEntityQuery(ComponentType.ReadOnly<LocalTransform>(),
+                ComponentType.ReadOnly<ChaserTag>());
 
-       var rotateTowardsPlayerJob = new RotateTowardsPlayerJob
-       {
-           dt = dt,
-           transformArray = translationArray
-       }.ScheduleParallel(Dependency);
-
-       /*Entities.WithAll<ChaserTag>().ForEach((ref Rotation rotation, ref moveData moveData, in Translation trans, in TowerTarget target) =>
+   
+        new RotateTowardsPlayerJob
         {
-            var targetPos = GetComponent<Translation>(target.Value).Value;
+            dt = dt,
+            transformArray = translationArray
+        }.ScheduleParallel();
+
+        /*Entities.WithAll<ChaserTag>().ForEach((ref Rotation rotation, ref moveData moveData, in Translation trans, in TowerTarget target) =>
+         {
+             var targetPos = GetComponent<Translation>(target.Value).Value;
+             var dir = targetPos - trans.Value;
+             var normalisedDir = math.normalizesafe(dir);
+
+             quaternion targetRot = quaternion.LookRotationSafe(normalisedDir, math.up());
+             rotation.Value = math.slerp(rotation.Value, targetRot, dt * moveData.rotationSpeed);
+
+         }).ScheduleParallel();
+         */
+
+        new RotateTowardsNearestEnemyJob
+        {
+            dt = dt,
+            localTransformArray = translationArray
+        }.ScheduleParallel();
+
+        // var rotateTowardsNearestTargetJob = new RotateTowardsNearestEnemyJob
+        // {
+        //     dt = dt,
+        //     localTransformArray = translationArray
+        // }.ScheduleParallel(rotateTowardsPlayerJob);
+        /*Entities.WithAll<TowerTag>().ForEach((DynamicBuffer<EnemyTargetBuffer> enemyBuffer, ref Rotation rotation, ref moveData moveData, in Translation trans) =>
+        {
+            float closestDist = math.INFINITY;
+            float3 targetPos = 0;
+            for (int i = 0; i < enemyBuffer.Length; i++)
+            {
+                var enemyTrans = GetComponent<Translation>(enemyBuffer[i].Value);
+                var dist = math.distance(trans.Value, enemyTrans.Value);
+
+                if (dist < closestDist)
+                {
+                    closestDist = dist;
+                    targetPos = enemyTrans.Value;
+                }
+            }
+
             var dir = targetPos - trans.Value;
             var normalisedDir = math.normalizesafe(dir);
 
             quaternion targetRot = quaternion.LookRotationSafe(normalisedDir, math.up());
             rotation.Value = math.slerp(rotation.Value, targetRot, dt * moveData.rotationSpeed);
-
         }).ScheduleParallel();
         */
-       
-       var rotateTowardsNearestTargetJob = new RotateTowardsNearestEnemyJob
-       {
-           dt = dt,
-           localTransformArray = translationArray
-       }.ScheduleParallel(rotateTowardsPlayerJob);
-       /*Entities.WithAll<TowerTag>().ForEach((DynamicBuffer<EnemyTargetBuffer> enemyBuffer, ref Rotation rotation, ref moveData moveData, in Translation trans) =>
-       {
-           float closestDist = math.INFINITY;
-           float3 targetPos = 0; 
-           for (int i = 0; i < enemyBuffer.Length; i++)
-           {
-               var enemyTrans = GetComponent<Translation>(enemyBuffer[i].Value);
-               var dist = math.distance(trans.Value, enemyTrans.Value);
 
-               if (dist < closestDist)
-               {
-                   closestDist = dist;
-                   targetPos = enemyTrans.Value;
-               } 
-           }
-
-           var dir = targetPos - trans.Value;
-           var normalisedDir = math.normalizesafe(dir);
-
-           quaternion targetRot = quaternion.LookRotationSafe(normalisedDir, math.up());
-           rotation.Value = math.slerp(rotation.Value, targetRot, dt * moveData.rotationSpeed);
-       }).ScheduleParallel();
-       */
-       
-       rotateTowardsNearestTargetJob.Complete();
+        //rotateTowardsNearestTargetJob.Complete();
     }
-}
 
+//
+// public partial class FaceTargetSystem1 : SystemBase
+// {
+//     protected override void OnCreate()
+//     {
+//         RequireForUpdate<GameplayInteractionSingleton>();
+//     }
+//
+//     protected override void OnUpdate()
+//     {
+//         float dt = SystemAPI.Time.DeltaTime; 
+//        var translationArray = GetComponentLookup<LocalTransform>(true);
+//
+//        var rotateTowardsPlayerJob = new RotateTowardsPlayerJob
+//        {
+//            dt = dt,
+//            transformArray = translationArray
+//        }.ScheduleParallel(Dependency);
+//
+//        /*Entities.WithAll<ChaserTag>().ForEach((ref Rotation rotation, ref moveData moveData, in Translation trans, in TowerTarget target) =>
+//         {
+//             var targetPos = GetComponent<Translation>(target.Value).Value;
+//             var dir = targetPos - trans.Value;
+//             var normalisedDir = math.normalizesafe(dir);
+//
+//             quaternion targetRot = quaternion.LookRotationSafe(normalisedDir, math.up());
+//             rotation.Value = math.slerp(rotation.Value, targetRot, dt * moveData.rotationSpeed);
+//
+//         }).ScheduleParallel();
+//         */
+//        
+//        var rotateTowardsNearestTargetJob = new RotateTowardsNearestEnemyJob
+//        {
+//            dt = dt,
+//            localTransformArray = translationArray
+//        }.ScheduleParallel(rotateTowardsPlayerJob);
+//        /*Entities.WithAll<TowerTag>().ForEach((DynamicBuffer<EnemyTargetBuffer> enemyBuffer, ref Rotation rotation, ref moveData moveData, in Translation trans) =>
+//        {
+//            float closestDist = math.INFINITY;
+//            float3 targetPos = 0; 
+//            for (int i = 0; i < enemyBuffer.Length; i++)
+//            {
+//                var enemyTrans = GetComponent<Translation>(enemyBuffer[i].Value);
+//                var dist = math.distance(trans.Value, enemyTrans.Value);
+//
+//                if (dist < closestDist)
+//                {
+//                    closestDist = dist;
+//                    targetPos = enemyTrans.Value;
+//                } 
+//            }
+//
+//            var dir = targetPos - trans.Value;
+//            var normalisedDir = math.normalizesafe(dir);
+//
+//            quaternion targetRot = quaternion.LookRotationSafe(normalisedDir, math.up());
+//            rotation.Value = math.slerp(rotation.Value, targetRot, dt * moveData.rotationSpeed);
+//        }).ScheduleParallel();
+//        */
+//        
+//        rotateTowardsNearestTargetJob.Complete();
+//     }
+// }
+}
 
 
 [WithAll(typeof(ChaserTag))]
@@ -76,6 +152,8 @@ public partial struct RotateTowardsPlayerJob : IJobEntity
 {
     public float dt;
     [ReadOnly]
+    //[NativeDisableParallelForRestriction]
+    [NativeDisableContainerSafetyRestriction]
     public ComponentLookup<LocalTransform> transformArray; 
     
     public void Execute(ref LocalTransform transform, ref moveData moveData, in TowerTarget target)
@@ -94,6 +172,7 @@ public partial struct RotateTowardsPlayerJob : IJobEntity
 public partial struct RotateTowardsNearestEnemyJob : IJobEntity
 {
     [ReadOnly]
+    [NativeDisableContainerSafetyRestriction]
     public ComponentLookup<LocalTransform> localTransformArray;
     public float dt;
 

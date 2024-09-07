@@ -1,12 +1,36 @@
-// using Unity.Burst;
-// using Unity.Collections;
-// using Unity.Entities;
-// using Unity.Jobs;
-// using Unity.Mathematics;
-// using Unity.Transforms;
+using Unity.Burst;
+using Unity.Collections;
+using Unity.Entities;
+using Unity.Jobs;
+using Unity.Mathematics;
+using Unity.Transforms;
+
+
+[UpdateAfter(typeof(FaceTargetSystem))]
+public partial struct EneemyMovementSystem : ISystem
+{
+    [BurstCompile]
+    public void OnCreate(ref SystemState state)
+    {
+        state.RequireForUpdate<GameplayInteractionSingleton>();
+    }
+
+    //[BurstCompile]
+    public void OnUpdate(ref SystemState state)
+    {
+        float dt = SystemAPI.Time.DeltaTime; 
+
+         new EnemyMovementJob
+        {
+            dt = dt
+        }.Schedule();
+    }
+}
+
+
 //
 // [UpdateAfter(typeof(FaceTargetSystem))]
-// public partial class EneemyMovementSystem : SystemBase
+// public partial class EneemyMovementSystem1 : SystemBase
 // {
 //     protected override void OnUpdate()
 //     {
@@ -18,24 +42,17 @@
 //         }.Schedule(Dependency);
 //         
 //         enemyMovementJob.Complete();
-//         
-//         /*Entities.WithAll<ChaserTag>().ForEach((ref Translation translation, in Rotation rot, in moveData moveData) =>
-//          {
-//              float3 forwardDir = math.forward(rot.Value);
-//              translation.Value +=  forwardDir * moveData.moveSpeed * dt;
-//          }).ScheduleParallel();
-//          */
 //     }
 // }
-//
-// [WithAll(typeof(ChaserTag))]
-// [BurstCompile]
-// public partial struct EnemyMovementJob : IJobEntity
-// {
-//     public float dt; 
-//     public void Execute(ref Translation translation, in Rotation rot, in moveData moveData)
-//     {
-//         float3 forwardDir = math.forward(rot.Value);
-//         translation.Value +=  forwardDir * moveData.moveSpeed * dt;
-//     }
-// }
+
+[WithAll(typeof(ChaserTag))]
+[BurstCompile]
+public partial struct EnemyMovementJob : IJobEntity
+{
+    public float dt; 
+    public void Execute(ref LocalTransform trans, in moveData moveData)
+    {
+        float3 forwardDir = math.forward(trans.Rotation.value);
+        trans.Position += forwardDir * moveData.moveSpeed * dt;
+    }
+}
