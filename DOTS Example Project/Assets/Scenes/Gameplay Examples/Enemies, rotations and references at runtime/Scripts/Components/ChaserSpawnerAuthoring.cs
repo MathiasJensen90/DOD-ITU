@@ -5,7 +5,6 @@ using Random = Unity.Mathematics.Random;
 public class ChaserSpawnerAuthoring : MonoBehaviour 
 {
     public GameObject ChaserPrefab;
-    public float timer;
     public float timeDelay;
     class baker : Baker<ChaserSpawnerAuthoring>
     {
@@ -15,7 +14,7 @@ public class ChaserSpawnerAuthoring : MonoBehaviour
             AddComponent(entity, new ChaserSpawner
             {
                 chaser = GetEntity(authoring.ChaserPrefab, TransformUsageFlags.Dynamic),
-                timer = authoring.timer,
+                timer = 0,
                 timerDelay = authoring.timeDelay,
                 random = new Random(1231)
             });
