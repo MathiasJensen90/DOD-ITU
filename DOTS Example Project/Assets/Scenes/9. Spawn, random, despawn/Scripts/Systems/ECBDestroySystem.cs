@@ -4,7 +4,7 @@ using Unity.Rendering;
 using UnityEngine;
 
 
-//[UpdateAfter(typeof(ECBStopRotationSystem))]
+[UpdateAfter(typeof(ECBStopRotationSystem))]
 public partial struct ECBDestroySystem : ISystem
 {
     [BurstCompile]
@@ -13,7 +13,7 @@ public partial struct ECBDestroySystem : ISystem
         state.RequireForUpdate<ECBSingletonComponent>();
     }
 
-    //[BurstCompile]
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         float elapsedTime = (float)SystemAPI.Time.ElapsedTime; 
@@ -34,7 +34,8 @@ public partial struct DestroyStoppedEntities : IJobEntity
     public EntityCommandBuffer.ParallelWriter ECB; 
     public void Execute([ChunkIndexInQuery]int chunkKey,in StopRotatingTag stopRot, Entity entity)
     {
-        if (stopRot.timer >= elapsedTime)
+       // if (stopRot.timer >= elapsedTime >= stopRot.timer)
+       if (elapsedTime >= stopRot.timer)
         {
             ECB.DestroyEntity(chunkKey, entity);
         }

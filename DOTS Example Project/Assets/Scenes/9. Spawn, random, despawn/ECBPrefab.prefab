@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3321360776479978524}
   - component: {fileID: -4475857076891267469}
   - component: {fileID: 4643312326023887181}
+  - component: {fileID: -3770807840505153669}
   m_Layer: 0
   m_Name: ECBPrefab
   m_TagString: Untagged
@@ -63,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: fcd0f86a86ff4564580e92b350f77e6c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -97,6 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 405a4b3302ce7b44885d8427f4f7bfed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timer: 2
 --- !u!114 &4643312326023887181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,4 +111,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edb9baa702ea490b9b77d61a2732ca22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotatingValue: 3
+  rotatingValue: 80
+--- !u!114 &-3770807840505153669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6193037408025241320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54b6467bcd530cd4d809fae70ea0ca9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 0.08527584, g: 0.7660377, b: 0.15266784, a: 0}

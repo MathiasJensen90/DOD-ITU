@@ -7,13 +7,16 @@ using Random = Unity.Mathematics.Random;
 
 public class RandomDataBaker : MonoBehaviour
 {
-    
+    public float duration = 2f;
     class baker : Baker<RandomDataBaker>
     {
         public override void Bake(RandomDataBaker authoring)
         {
             var entity = GetEntity(TransformUsageFlags.Dynamic);
-            AddComponent<RandomData>(entity); 
+            AddComponent(entity, new RandomData
+            {
+                duration = authoring.duration
+            }); 
         }
     }
 }
@@ -23,5 +26,6 @@ public struct RandomData : IComponentData
 {
     public Random Value;
     public bool dataInitiliazed; 
-    public float timer; 
+    public float duration;
+    public float timer;
 }

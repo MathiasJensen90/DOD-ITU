@@ -80,7 +80,7 @@ public partial struct RotateTowardsNearestEnemyJob : IJobEntity
     public float dt;
     public float3 enemyPos;
 
-    public void Execute(DynamicBuffer<EnemyTargetBuffer> enemyBuffer, ref LocalTransform localTrans, ref moveData moveData)
+    public void Execute( ref LocalTransform localTrans, ref moveData moveData)
     {
         var dir = enemyPos - localTrans.Position;
         var normalisedDir = math.normalizesafe(dir);
