@@ -245,7 +245,6 @@ GameObject:
   - component: {fileID: 1283680639}
   - component: {fileID: 1283680642}
   - component: {fileID: 1283680641}
-  - component: {fileID: 1283680640}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -268,27 +267,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 675795491}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1283680640
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1283680638}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1283680641
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -369,7 +347,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ChaserPrefab: {fileID: 2131819795274963635, guid: 445f21e34a41bc843ab0d25ff93e2c93, type: 3}
-  timeDelay: 2
+  timeDelay: 0.001
 --- !u!4 &1298383363
 Transform:
   m_ObjectHideFlags: 0
@@ -489,7 +467,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2131819796225748607, guid: 445f21e34a41bc843ab0d25ff93e2c93, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

@@ -11,10 +11,8 @@ GameObject:
   - component: {fileID: 932229446733843709}
   - component: {fileID: 6356890528403337224}
   - component: {fileID: 3321360776479978524}
-  - component: {fileID: 8976391776801420713}
-  - component: {fileID: 7131544482049070353}
   - component: {fileID: -4475857076891267469}
-  - component: {fileID: 95343129157776699}
+  - component: {fileID: 4643312326023887181}
   m_Layer: 0
   m_Name: ECBPrefab
   m_TagString: Untagged
@@ -29,12 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6193037408025241320}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.4343202, y: 1.3326011, z: 0.08960631}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6356890528403337224
 MeshFilter:
@@ -55,6 +54,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -85,34 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8976391776801420713
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6193037408025241320}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7131544482049070353
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6193037408025241320}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4d57bbc82492af4a8957b0ad2519eed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  amplitude: 0
-  frequency: 0
-  rotationSpeed: 124.74
 --- !u!114 &-4475857076891267469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,11 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 405a4b3302ce7b44885d8427f4f7bfed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Value:
-    state: 0
-  dataInitiliazed: 0
-  timer: 2
---- !u!114 &95343129157776699
+--- !u!114 &4643312326023887181
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,6 +106,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6193037408025241320}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88c33e870eb94c94e859b95378b5dbe3, type: 3}
+  m_Script: {fileID: 11500000, guid: edb9baa702ea490b9b77d61a2732ca22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotatingValue: 3
