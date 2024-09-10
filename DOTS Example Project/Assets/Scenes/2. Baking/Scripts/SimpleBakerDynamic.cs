@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
 
-public class SimpleBaker : MonoBehaviour
+public class SimpleBakerDynamic : MonoBehaviour
 {
 
     public float simpleValue; 
     
-    public class baker : Baker<SimpleBaker>
+    public class baker : Baker<SimpleBakerDynamic>
     {
-        public override void Bake(SimpleBaker authoring)
+        public override void Bake(SimpleBakerDynamic authoring)
         {
             var entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponent(entity, new SimpleComp
