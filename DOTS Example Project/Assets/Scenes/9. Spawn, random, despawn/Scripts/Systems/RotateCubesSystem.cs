@@ -16,11 +16,26 @@ partial struct RotateCubesSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         float dt = SystemAPI.Time.DeltaTime;
+        var ecbSingleton = SystemAPI.GetSingleton<ECBSingletonComponent>();
 
-        new RotateCubeJob
+        if (ecbSingleton.SchedulingType == SchedulingType.Run)
         {
-            dt = dt
-        }.ScheduleParallel();
+            foreach (var (trans,
+                         rotData)  in SystemAPI.Query<RefRW<LocalTransform>,
+                         RefRO<RotatingData>>())
+            {
+                var xRot = quaternion.RotateZ(rotData.ValueRO.Value * Mathf.Deg2Rad * dt);
+                trans.ValueRW.Rotation = math.mul(trans.ValueRO.Rotation, xRot);
+            }
+            
+        }
+        else if (ecbSingleton.SchedulingType == SchedulingType.Schedule)
+        {
+            new RotateCubeJob
+            {
+                dt = dt
+            }.ScheduleParallel();
+        }
     }
 }
 

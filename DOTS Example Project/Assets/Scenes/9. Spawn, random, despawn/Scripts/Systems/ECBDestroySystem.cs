@@ -1,6 +1,7 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
 using Unity.Rendering;
+using Unity.Transforms;
 using UnityEngine;
 
 
@@ -17,14 +18,30 @@ public partial struct ECBDestroySystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         float elapsedTime = (float)SystemAPI.Time.ElapsedTime; 
+        var ecbSingleton = SystemAPI.GetSingleton<ECBSingletonComponent>();
         var ECB = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
-     .CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter();
-        
-        new DestroyStoppedEntities
+            .CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter();
+       
+        if (ecbSingleton.SchedulingType == SchedulingType.Run)
         {
-            ECB = ECB,
-            elapsedTime = elapsedTime
-        }.Schedule();
+            foreach (var (stopRotTag,
+                         entity)  in SystemAPI.Query<RefRO<StopRotatingTag>>().WithEntityAccess())
+            {
+                if (elapsedTime >= stopRotTag.ValueRO.timer)
+                {
+                    ECB.DestroyEntity(entity.Index, entity);
+                }
+            }
+        }
+        else if (ecbSingleton.SchedulingType == SchedulingType.Schedule)
+        {
+            
+            new DestroyStoppedEntities
+            {
+                ECB = ECB,
+                elapsedTime = elapsedTime
+            }.Schedule();
+        }
     }
 }
 
@@ -34,38 +51,10 @@ public partial struct DestroyStoppedEntities : IJobEntity
     public EntityCommandBuffer.ParallelWriter ECB; 
     public void Execute([ChunkIndexInQuery]int chunkKey,in StopRotatingTag stopRot, Entity entity)
     {
-       // if (stopRot.timer >= elapsedTime >= stopRot.timer)
        if (elapsedTime >= stopRot.timer)
-        {
+       {
             ECB.DestroyEntity(chunkKey, entity);
-        }
+       }
     }
 }
 
-
-// [UpdateAfter(typeof(ECBStopRotationSystem))]
-//     public partial class ECBDestroySystem1 : SystemBase
-//     {
-//         private BeginSimulationEntityCommandBufferSystem ecbSystem;
-//    
-//         protected override void OnCreate()
-//         {
-//             RequireForUpdate<ECBSingletonComponent>();
-//             ecbSystem = World.GetExistingSystem<BeginSimulationEntityCommandBufferSystem>();
-//         }
-//
-//         protected override void OnUpdate()
-//         {
-//             var elapsedTime = Time.ElapsedTime;
-//             EntityCommandBuffer.ParallelWriter ecb = ecbSystem.CreateCommandBuffer().AsParallelWriter();
-//
-//             Entities.ForEach((Entity entity, int entityInQueryIndex, in StopRotatingTag stopRot) =>
-//             {
-//                 if (stopRot.timer >= elapsedTime) return;
-//                 ecb.DestroyEntity(entityInQueryIndex, entity);
-//
-//             }).Schedule();
-//             
-//             ecbSystem.AddJobHandleForProducer(Dependency);
-//         }
-//     }

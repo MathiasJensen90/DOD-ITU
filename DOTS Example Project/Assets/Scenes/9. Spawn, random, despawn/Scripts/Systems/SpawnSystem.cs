@@ -17,14 +17,34 @@ public partial struct SpawnSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         state.Enabled = false;
-        var ecb = new EntityCommandBuffer(Allocator.TempJob);
+        var ecbSingleton = SystemAPI.GetSingleton<ECBSingletonComponent>();
 
-        JobHandle spawnjob = new spawnCubes
+        if (ecbSingleton.SchedulingType == SchedulingType.Run)
         {
-            ecb = ecb
-        }.Schedule(state.Dependency);
-        spawnjob.Complete();
-        ecb.Playback(state.EntityManager);
+            int n = ecbSingleton.spawnAmount; 
+            for (int i = 0; i < n*n*n ; i++)
+            {
+                    var e = state.EntityManager.Instantiate(ecbSingleton.prefabTospawn);
+                    float x = (i % n) * 2f;
+                    float y = ((i / n) % n) * 2f;
+                    float z = (i / (n * n)) * 2f;
+
+                    state.EntityManager.SetComponentData(e, LocalTransform.FromPosition(new float3(x, y, z)));
+            }; 
+        }
+        else if (ecbSingleton.SchedulingType == SchedulingType.Schedule)
+        {
+            var ecb = new EntityCommandBuffer(Allocator.TempJob);
+
+            JobHandle spawnjob = new spawnCubes
+            {
+                ecb = ecb
+            }.Schedule(state.Dependency);
+            spawnjob.Complete();
+            ecb.Playback(state.EntityManager);
+        }
+        
+        
     }
 }
 
