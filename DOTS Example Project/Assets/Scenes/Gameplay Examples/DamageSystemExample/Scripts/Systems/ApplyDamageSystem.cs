@@ -6,7 +6,26 @@
 // using Unity.Transforms;
 // using UnityEngine;
 //
-// public partial class ApplyDamageSystem : SystemBase
+
+
+// using Unity.Entities;
+//
+// public partial struct ApplyDamageSystem : ISystem
+// {
+//
+//     public void OnCreate(ref SystemState state)
+//     {
+//         state.RequireForUpdate<SystemExampleSingleton>();
+//     }
+//
+//     public void OnUpdate(ref SystemState state)
+//     {
+//       
+//     }
+// }
+
+
+// public partial class ApplyDamageSystem1 : SystemBase
 // {
 //     
 //     protected override void OnUpdate()

@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SchedulingType: 2
-  spawnAmount: 10
+  spawnAmount: 50
   prefabToSpawn: {fileID: 6193037408025241320, guid: 297c0bb0229d9ba4abb6288b87bb870e, type: 3}
 --- !u!4 &1766669570
 Transform:
@@ -163,7 +163,7 @@ Transform:
   m_GameObject: {fileID: 1766669568}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 54.477272, y: -35.066677, z: 67.38646}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
