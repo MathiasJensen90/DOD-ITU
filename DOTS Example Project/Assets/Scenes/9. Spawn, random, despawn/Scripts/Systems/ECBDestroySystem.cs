@@ -19,22 +19,24 @@ public partial struct ECBDestroySystem : ISystem
     {
         float elapsedTime = (float)SystemAPI.Time.ElapsedTime; 
         var ecbSingleton = SystemAPI.GetSingleton<ECBSingletonComponent>();
-        var ECB = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
-            .CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter();
        
         if (ecbSingleton.SchedulingType == SchedulingType.Run)
         {
+            var ecb = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+                .CreateCommandBuffer(state.WorldUnmanaged);
             foreach (var (stopRotTag,
                          entity)  in SystemAPI.Query<RefRO<StopRotatingTag>>().WithEntityAccess())
             {
                 if (elapsedTime >= stopRotTag.ValueRO.timer)
                 {
-                    ECB.DestroyEntity(entity.Index, entity);
+                    ecb.DestroyEntity(entity);
                 }
             }
         }
         else if (ecbSingleton.SchedulingType == SchedulingType.Schedule)
         {
+            var ECB = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+                .CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter();
             
             new DestroyStoppedEntities
             {

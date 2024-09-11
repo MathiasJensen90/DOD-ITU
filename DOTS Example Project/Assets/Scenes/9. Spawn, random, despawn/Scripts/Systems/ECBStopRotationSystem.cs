@@ -21,11 +21,13 @@ public partial struct ECBStopRotationSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         float elapsedTime = (float)SystemAPI.Time.ElapsedTime;
-        EntityCommandBuffer ecb = new EntityCommandBuffer(state.WorldUpdateAllocator);
+        //EntityCommandBuffer ecb = new EntityCommandBuffer(state.WorldUpdateAllocator);
         var ecbSingleton = SystemAPI.GetSingleton<ECBSingletonComponent>();
         
         if (ecbSingleton.SchedulingType == SchedulingType.Run)
         {
+            EntityCommandBuffer ecb = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+                .CreateCommandBuffer(state.WorldUnmanaged);
             foreach (var (randData, entity) in SystemAPI.Query<RefRW<RandomData>>().WithEntityAccess())
             {
                 if (!randData.ValueRO.dataInitiliazed)
@@ -64,23 +66,29 @@ public partial struct ECBStopRotationSystem : ISystem
         }
         else if (ecbSingleton.SchedulingType == SchedulingType.Schedule)
         {
-            var job = new InitRandomJob
+            var ECB = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+                .CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter();
+            
+            JobHandle initJob = state.Dependency = new InitRandomJob
             {
                 elapsedTime = elapsedTime
             }.Schedule(state.Dependency);
+            state.Dependency = initJob;
         
-            var job2 =  new StopRotatingJob
+            state.Dependency =  new StopRotatingJob
             {
                 elapsedTime = elapsedTime,
-                ecb = ecb
-            }.Schedule(job);
-        
-            job2.Complete();
+                ecb = ECB
+            }.ScheduleParallel(initJob);
+            
+            //state.Dependency = stopRotJob;
+            //job2.Complete();
         }
-        ecb.Playback(state.EntityManager);
+        //ecb.Playback(state.EntityManager);
     }
 }
 
+[BurstCompile]
 public partial struct InitRandomJob : IJobEntity
 {
     public float elapsedTime;
@@ -96,12 +104,13 @@ public partial struct InitRandomJob : IJobEntity
 }
 
 
+[BurstCompile]
 [WithNone(typeof(StopRotatingTag))]
 public partial struct StopRotatingJob : IJobEntity
 {
     public float elapsedTime;
-    public EntityCommandBuffer ecb;
-    public void Execute(Entity entity, ref RandomData randData, ref URPMaterialPropertyBaseColor baseCol)
+    public EntityCommandBuffer.ParallelWriter ecb;
+    public void Execute(Entity entity, [ChunkIndexInQuery]int  chunkIndex, ref RandomData randData, ref URPMaterialPropertyBaseColor baseCol)
     {
         float4 red = new float4(1, 0, 0, 1);
         float4 green = new float4(0, 1, 0, 1);
@@ -112,7 +121,7 @@ public partial struct StopRotatingJob : IJobEntity
         if (timer < randData.duration) return;
         if (randData.Value.NextInt(0,100) % 2 == 0)
         {
-            ecb.AddComponent(entity, new StopRotatingTag
+            ecb.AddComponent(chunkIndex, entity, new StopRotatingTag
             {
                 timer = elapsedTime + 2 + randData.Value.NextFloat(1,3)
             });

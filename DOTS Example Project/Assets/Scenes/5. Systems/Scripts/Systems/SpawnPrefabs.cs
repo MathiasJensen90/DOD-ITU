@@ -18,7 +18,7 @@ public partial struct SpawnPrefabs : ISystem
 
     public void OnUpdate(ref SystemState state)
     {
-        var ecb = new EntityCommandBuffer(state.WorldUpdateAllocator);
+        
         float dt = SystemAPI.Time.DeltaTime;
 
         foreach (var input in SystemAPI.Query<RefRW<InputComp>>())
@@ -44,21 +44,13 @@ public partial struct SpawnPrefabs : ISystem
                 spawn.ValueRW.cooldownTimer = spawn.ValueRO.cooldownAmount;
                 spawn.ValueRW.numbOfSpawnedEntities++;
                 var prefabEntity = spawn.ValueRO.prefabToSpawn;
-
                 
                 state.EntityManager.SetComponentData(prefabEntity,
                     LocalTransform.FromPosition(new float3(0, 2, -4 + 2f * spawn.ValueRO.numbOfSpawnedEntities)));
-                // ecb.SetComponent(prefabEntity, new LocalTransform
-                // {
-                //     Position = new float3(0, 0, 1.5f * spawn.numbOfSpawnedEntities),
-                //     Rotation = quaternion.identity,
-                //     Scale = 1
-                // });
-                // ecb.Instantiate(prefabEntity);
                 state.EntityManager.Instantiate(prefabEntity); 
             }
         }
-
+        // var ecb = new EntityCommandBuffer(state.WorldUpdateAllocator);
         // JobHandle jobhandle = new SpawnJob
         // {
         //     dt = dt,
