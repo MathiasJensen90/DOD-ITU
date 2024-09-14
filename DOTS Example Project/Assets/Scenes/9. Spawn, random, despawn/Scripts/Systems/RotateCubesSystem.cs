@@ -46,8 +46,7 @@ public partial struct RotateCubeJob : IJobEntity
     public float dt;
     public void Execute( 
         ref LocalTransform trans, 
-        in RotatingData rotData,
-        in RandomData randomData)
+        in RotatingData rotData)
     {
         var xRot = quaternion.RotateZ(rotData.Value * Mathf.Deg2Rad * dt);
         trans.Rotation = math.mul(trans.Rotation, xRot);

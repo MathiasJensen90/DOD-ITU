@@ -8,7 +8,7 @@ using UnityEngine;
 public class ECBSingletonComponentBaker : MonoBehaviour
 {
     public SchedulingType SchedulingType;
-    [Range(1, 50)]
+    [Range(1, 200)]
     public int spawnAmount;
     public GameObject prefabToSpawn;
     class baker : Baker<ECBSingletonComponentBaker>

@@ -4,22 +4,19 @@ using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
-[DisableAutoCreation]
-public partial class UpdateCameraTargetPositionSystem : SystemBase
+
+public partial struct UpdateCameraTargetPositionSystem : ISystem
 {
-    protected override void OnUpdate()
+    public void OnCreate(ref SystemState state)
     {
-        new UpdateCameraJob().Run();
+        state.RequireForUpdate<InteractionConfig>();
+    }
+    public void OnUpdate(ref SystemState state)
+    {
+        foreach (var trans in SystemAPI.Query< RefRO<LocalTransform>>().WithAll<PhysicsPlayer>())
+        {
+            SimpleCameraFollow.Instance.UpdateTargetPosition(trans.ValueRO.Position);
+        }
     }
 }
 
-
-
-[WithAll(typeof(PhysicsPlayer))]
-public partial struct UpdateCameraJob : IJobEntity
-{
-    public void Execute(ref LocalTransform transform)
-    {
-        SimpleCameraFollow.Instance.UpdateTargetPosition(transform.Position);
-    }
-}

@@ -5,7 +5,11 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: d1c3109bdb54ad54c8a2b2838528e640
+  - enabled: 1
+    path: Assets/Scenes/9. Spawn, random, despawn/Jobified and burst example/Jobified
+      and Burst.unity
+    guid: a4404a00a5bb5d043996f88b5258ae18
   m_configObjects: {}
