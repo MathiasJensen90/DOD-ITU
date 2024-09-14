@@ -60,7 +60,6 @@ public partial struct TriggerObstacleJob : IJobEntity
             Entity obstacleEntity = config.obstacle;
             if (!allMoveObstacles.HasComponent(obstacleEntity))
             {
-                Debug.Log("added moveObstacle");
                 ecb.AddComponent(obstacleEntity, new MoveObstacle
                 {
                     destinationValue = config.destinationOffset
