@@ -8,7 +8,6 @@ using Random = Unity.Mathematics.Random;
 public class RandomDataBaker : MonoBehaviour
 {
     public float duration = 2f;
-    public bool example; 
     class baker : Baker<RandomDataBaker>
     {
         public override void Bake(RandomDataBaker authoring)

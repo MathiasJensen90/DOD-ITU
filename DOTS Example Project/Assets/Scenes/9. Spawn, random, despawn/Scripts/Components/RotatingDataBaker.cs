@@ -18,7 +18,7 @@ public class RotatingDataBaker : MonoBehaviour
     }
 }
 
-public struct RotatingData : IComponentData
+public struct RotatingData : IComponentData, IEnableableComponent
 {
     public float Value; 
 }

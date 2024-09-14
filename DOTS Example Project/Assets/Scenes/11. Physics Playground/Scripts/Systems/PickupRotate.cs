@@ -25,7 +25,6 @@ public partial struct PickupRotate : ISystem
     }
 }
 
-
 [BurstCompile]
 [WithAll(typeof(PickupTag))]
 public partial struct PickupRotationJob : IJobEntity

@@ -12,7 +12,7 @@ partial struct RotateCubesSystem : ISystem
         state.RequireForUpdate<ECBSingletonComponent>();
     }
 
-    [BurstCompile]
+    //[BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         float dt = SystemAPI.Time.DeltaTime;
@@ -24,12 +24,29 @@ partial struct RotateCubesSystem : ISystem
                          rotData)  in SystemAPI.Query<RefRW<LocalTransform>,
                          RefRO<RotatingData>>())
             {
-                var xRot = quaternion.RotateZ(rotData.ValueRO.Value * Mathf.Deg2Rad * dt);
+                var xRot = quaternion.RotateZ(rotData.ValueRO.Value * math.TORADIANS * dt);
                 trans.ValueRW.Rotation = math.mul(trans.ValueRO.Rotation, xRot);
             }
-            
         }
         else if (ecbSingleton.SchedulingType == SchedulingType.Schedule)
+        {
+            // new RotateCubeJob
+            // {
+            //     dt = dt
+            // }.Schedule();
+            new RotateCubeJob
+            {
+                dt = dt
+            }.Schedule();
+        }
+        else if (ecbSingleton.SchedulingType == SchedulingType.ScheduleParallel)
+        {
+            new RotateCubeJob
+            {
+                dt = dt
+            }.ScheduleParallel();
+        }
+        else if (ecbSingleton.SchedulingType == SchedulingType.ScheduleParallelEnable)
         {
             new RotateCubeJob
             {
@@ -48,7 +65,7 @@ public partial struct RotateCubeJob : IJobEntity
         ref LocalTransform trans, 
         in RotatingData rotData)
     {
-        var xRot = quaternion.RotateZ(rotData.Value * Mathf.Deg2Rad * dt);
+        var xRot = quaternion.RotateZ(rotData.Value * math.TORADIANS * dt);
         trans.Rotation = math.mul(trans.Rotation, xRot);
     }
 }

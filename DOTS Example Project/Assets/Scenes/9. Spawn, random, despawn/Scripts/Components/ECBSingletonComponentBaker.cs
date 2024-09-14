@@ -39,5 +39,7 @@ public struct ECBSingletonComponent : IComponentData
 
 public enum SchedulingType{
     Run,
-    Schedule
+    Schedule,
+    ScheduleParallel,
+    ScheduleParallelEnable
 }

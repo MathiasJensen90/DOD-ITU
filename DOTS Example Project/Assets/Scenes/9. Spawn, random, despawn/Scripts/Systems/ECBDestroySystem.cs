@@ -44,9 +44,32 @@ public partial struct ECBDestroySystem : ISystem
                 elapsedTime = elapsedTime
             }.Schedule();
         }
+        else if (ecbSingleton.SchedulingType == SchedulingType.ScheduleParallel)
+        {
+            var ECB = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+                .CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter();
+            
+            new DestroyStoppedEntities
+            {
+                ECB = ECB,
+                elapsedTime = elapsedTime
+            }.ScheduleParallel();
+        }
+        else if (ecbSingleton.SchedulingType == SchedulingType.ScheduleParallelEnable)
+        {
+            var ECB = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+                .CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter();
+            
+            new DestroyStoppedEntitiesEnabled
+            {
+                ECB = ECB,
+                elapsedTime = elapsedTime
+            }.ScheduleParallel();
+        }
     }
 }
 
+[BurstCompile]
 public partial struct DestroyStoppedEntities : IJobEntity
 {
     public float elapsedTime;
@@ -57,6 +80,20 @@ public partial struct DestroyStoppedEntities : IJobEntity
        {
             ECB.DestroyEntity(chunkKey, entity);
        }
+    }
+}
+[BurstCompile]
+[WithNone(typeof(RotatingData))]
+public partial struct DestroyStoppedEntitiesEnabled : IJobEntity
+{
+    public float elapsedTime;
+    public EntityCommandBuffer.ParallelWriter ECB; 
+    public void Execute([ChunkIndexInQuery]int chunkKey, in RandomData randomData, Entity entity)
+    {
+        if (elapsedTime >= randomData.timer)
+        {
+            ECB.DestroyEntity(chunkKey, entity);
+        }
     }
 }
 
