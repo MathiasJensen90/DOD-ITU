@@ -6,18 +6,13 @@ using Unity.Transforms;
 using UnityEngine;
 
 
-[DisableAutoCreation]
+
 [BurstCompile]
-public partial struct InteractionExperimentSystem : ISystem
+public partial struct IdiomaticForEachSystem : ISystem
 {
     public void OnCreate(ref SystemState state)
     {
-        
-    }
-
-    public void OnDestroy(ref SystemState state)
-    {
-
+        state.RequireForUpdate<enemyInteractionTag>();
     }
     
     [BurstCompile]
@@ -33,18 +28,24 @@ public partial struct InteractionExperimentSystem : ISystem
             distance[0] = translation.ValueRO.Position + dt;
         }
         
-        
         foreach (var translation in SystemAPI.Query<RefRO<LocalTransform>>().WithAll<enemyInteractionTag>())
         {
             distance[1] = translation.ValueRO.Position;
         }
 
         var dist = math.distance(distance[0], distance[1]);
+        Color col;
+        if (dist < 7f)
+        {
+            col = Color.red;
+        }
+        else
+        {
+            col = Color.blue;
+        }
         
-        Debug.DrawLine(distance[0], distance[1]);
-        
+        Debug.DrawLine(distance[0], distance[1], col);
         Debug.Log($"{dist}");
-
         distance.Dispose();
     }
 }

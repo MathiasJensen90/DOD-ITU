@@ -11,8 +11,6 @@ public partial struct CommonFunctionsExample : ISystem
     public void OnUpdate(ref SystemState state)
     {
         ComponentLookup<LocalTransform> localTrans = SystemAPI.GetComponentLookup<LocalTransform>();
-        //ComponentLookup<LocalTransform> rotations = GetComponentLookup<Rotation>();
-        //ComponentLookup<Translation> translations = GetComponentLookup<Translation>(true);
         
         EntityQuery query = state.GetEntityQuery(ComponentType.Exclude<Bullet>(), ComponentType.ReadOnly<LocalTransform>());
         var entityArray = query.ToEntityArray(Allocator.Persistent);

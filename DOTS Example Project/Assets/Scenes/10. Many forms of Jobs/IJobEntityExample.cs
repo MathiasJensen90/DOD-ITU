@@ -6,39 +6,43 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
+[DisableAutoCreation]
 [BurstCompile]
-public partial struct InteractionJobifiedSystem : ISystem
+public partial struct IJobEntityExampleSystem : ISystem
 {
     public void OnCreate(ref SystemState state)
     {
-        
+        state.RequireForUpdate<enemyInteractionTag>();
     }
 
-    public void OnDestroy(ref SystemState state)
-    {
-       
-    }
     
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        //how to best pass data along entiites? 
         NativeArray<float3> distance = new NativeArray<float3>(3, Allocator.TempJob);
         
-        new EnemyWritePosJob
+        var handle  = new EnemyWritePosJob
         {
             enemyPos = distance
-        }.Schedule();
+        }.Schedule(state.Dependency);
 
-        new DistJobExample
+        var otherHandle = new DistJobExample
         {
             enemyPos = distance
-        }.Schedule();
-
-        state.Dependency.Complete();
+        }.Schedule(handle);
+        otherHandle.Complete();
         
-        Debug.DrawLine(distance[0], distance[1]);
-        
+        Color col;
+        if (math.distance(distance[0], distance[1]) < 7f)
+        {
+            col = Color.red;
+        }
+        else
+        {
+            col = Color.blue;
+        }
+        Debug.DrawLine(distance[0], distance[1], col);
+        distance.Dispose();
     }
 }
 
@@ -61,7 +65,5 @@ public partial struct DistJobExample : IJobEntity
     public void Execute(in LocalTransform trans)
     {
         enemyPos[1] = trans.Position;
-        var dist = math.distance(trans.Position, enemyPos[0]);
-        Debug.Log($"{dist}");
     }
 }
