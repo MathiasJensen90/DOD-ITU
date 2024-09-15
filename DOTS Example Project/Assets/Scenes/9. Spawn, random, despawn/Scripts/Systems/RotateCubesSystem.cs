@@ -22,7 +22,7 @@ partial struct RotateCubesSystem : ISystem
         {
             foreach (var (trans,
                          rotData)  in SystemAPI.Query<RefRW<LocalTransform>,
-                         RefRO<RotatingData>>())
+                         RefRO<RotatingData>>().WithNone<StopRotatingTag>())
             {
                 var xRot = quaternion.RotateZ(rotData.ValueRO.Value * math.TORADIANS * dt);
                 trans.ValueRW.Rotation = math.mul(trans.ValueRO.Rotation, xRot);
