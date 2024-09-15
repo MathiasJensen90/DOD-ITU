@@ -60,7 +60,7 @@ public partial struct FaceTargetSystem : ISystem
 public partial struct RotateTowardsPlayerJob : IJobEntity
 {
     public float dt;
-    [ReadOnly]
+    //[ReadOnly]
     [NativeDisableContainerSafetyRestriction]
     public ComponentLookup<LocalTransform> transformLookup; 
     

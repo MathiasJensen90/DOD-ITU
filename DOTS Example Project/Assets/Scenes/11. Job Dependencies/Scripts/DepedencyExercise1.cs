@@ -33,7 +33,7 @@ public partial struct DepedencyExercise1 : ISystem
             valueToSet = 2
         }.Schedule(bla);
         
-        dl.Complete();
+        //dl.Complete();
         
         for (int i = 0; i < sharedArray.Length; i++)
         {

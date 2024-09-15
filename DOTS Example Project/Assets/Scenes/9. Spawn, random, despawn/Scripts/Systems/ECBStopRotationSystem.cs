@@ -68,12 +68,12 @@ public partial struct ECBStopRotationSystem : ISystem
             var ECB = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
                 .CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter();
             
-            JobHandle initJob = state.Dependency = new InitRandomJob
+            JobHandle initJob = new InitRandomJob
             {
                 elapsedTime = elapsedTime
             }.Schedule(state.Dependency);
         
-            state.Dependency =  new StopRotatingJob
+            state.Dependency = new StopRotatingJob
             {
                 elapsedTime = elapsedTime,
                 ecb = ECB
@@ -110,9 +110,7 @@ public partial struct ECBStopRotationSystem : ISystem
                 elapsedTime = elapsedTime,
                 ecb = ECB
             }.ScheduleParallel(initJob);
-            
         }
-        
     }
 }
 

@@ -30,10 +30,6 @@ partial struct RotateCubesSystem : ISystem
         }
         else if (ecbSingleton.SchedulingType == SchedulingType.Schedule)
         {
-            // new RotateCubeJob
-            // {
-            //     dt = dt
-            // }.Schedule();
             new RotateCubeJob
             {
                 dt = dt
