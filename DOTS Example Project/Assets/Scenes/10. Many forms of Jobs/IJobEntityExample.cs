@@ -21,12 +21,12 @@ public partial struct IJobEntityExampleSystem : ISystem
     {
         NativeArray<float3> distance = new NativeArray<float3>(3, Allocator.TempJob);
         
-        var handle = new EnemyWritePosJob
+        JobHandle handle = new EnemyWritePosJob
         {
             enemyPos = distance
         }.Schedule(state.Dependency);
 
-        var otherHandle = new DistJobExample
+        JobHandle otherHandle = new DistJobExample
         {
             enemyPos = distance
         }.Schedule(handle);
