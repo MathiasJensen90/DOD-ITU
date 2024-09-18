@@ -6,7 +6,7 @@ using Unity.Transforms;
 using UnityEngine;
 
 
-
+[DisableAutoCreation]
 [BurstCompile]
 public partial struct IdiomaticForEachSystem : ISystem
 {
@@ -45,7 +45,7 @@ public partial struct IdiomaticForEachSystem : ISystem
         }
         
         Debug.DrawLine(distance[0], distance[1], col);
-        Debug.Log($"{dist}");
+        //Debug.Log($"{dist}");
         distance.Dispose();
     }
 }
