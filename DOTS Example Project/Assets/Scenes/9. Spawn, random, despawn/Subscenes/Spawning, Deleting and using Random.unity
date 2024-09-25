@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f848fa632978124c93799c3c21ce6db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SchedulingType: 2
+  SchedulingType: 1
   spawnAmount: 70
   prefabToSpawn: {fileID: 6193037408025241320, guid: 297c0bb0229d9ba4abb6288b87bb870e, type: 3}
 --- !u!4 &1766669570

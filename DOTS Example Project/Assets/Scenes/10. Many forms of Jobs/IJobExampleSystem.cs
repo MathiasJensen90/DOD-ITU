@@ -8,7 +8,7 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
-
+//[DisableAutoCreation]
 public partial struct IJobExampleSystem : ISystem
 {
     public void OnCreate(ref SystemState state)
@@ -23,21 +23,21 @@ public partial struct IJobExampleSystem : ISystem
 
         NativeArray<float> nums = new NativeArray<float>(5, Allocator.TempJob);
         
-        var firstJob = new myIJob
+        JobHandle firstJob = new myIJob
         {
             numbers = nums
-        }.Schedule();
-        var secondJob = new AnotherJob
+        }.Schedule(state.Dependency);
+        JobHandle secondJob = new AnotherJob
         {
             numbers = nums,
         }.Schedule(firstJob);
-       
+        
         secondJob.Complete();
 
-        for (int i = 0; i < nums.Length; i++)
-        {
-            Debug.Log($"{nums[i]}");
-        }
+         for (int i = 0; i < nums.Length; i++)
+         {
+             Debug.Log($"{nums[i]}");
+         }
         nums.Dispose();
     }
 }
@@ -65,7 +65,7 @@ public struct AnotherJob : IJob
     {
         for (int i = 0; i < numbers.Length; i++)
         {
-            numbers[0] *= numbers[i];
+            numbers[0] += numbers[i];
         }
     }
 }

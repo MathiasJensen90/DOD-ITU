@@ -21,19 +21,19 @@ public partial struct DepedencyExercise1 : ISystem
 
         var sharedArray = new NativeArray<int>(10, Allocator.TempJob);
         
-        var bla = state.Dependency = new incrementJob
+        JobHandle incrementJobHandle = state.Dependency = new incrementJob
         {
             array = sharedArray,
             valueToSet = 3
         }.Schedule(state.Dependency);
 
-        var dl = new incrementJob
+        var secondIncrementJobHandle = new incrementJob
         {
             array = sharedArray,
             valueToSet = 2
-        }.Schedule(bla);
+        }.Schedule(incrementJobHandle);
         
-        //dl.Complete();
+        secondIncrementJobHandle.Complete();
         
         for (int i = 0; i < sharedArray.Length; i++)
         {
