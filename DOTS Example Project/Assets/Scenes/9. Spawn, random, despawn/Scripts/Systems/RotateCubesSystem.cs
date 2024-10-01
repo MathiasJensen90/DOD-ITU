@@ -12,7 +12,7 @@ partial struct RotateCubesSystem : ISystem
         state.RequireForUpdate<ECBSingletonComponent>();
     }
 
-    //[BurstCompile]
+    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         float dt = SystemAPI.Time.DeltaTime;

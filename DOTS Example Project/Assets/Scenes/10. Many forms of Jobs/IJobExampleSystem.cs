@@ -8,7 +8,7 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
-//[DisableAutoCreation]
+[DisableAutoCreation]
 public partial struct IJobExampleSystem : ISystem
 {
     public void OnCreate(ref SystemState state)
