@@ -23,7 +23,6 @@ public partial struct ChangeColorSystem : ISystem
 
          new ColorLerpJob
         {
-            
             dt = dt,
             elapsedTime = elapsedTime,
             spacePressed = spacePressed

@@ -25,10 +25,3 @@ public struct MyMaterial : IComponentData
 {
     public float4 Value; 
 }
-
-
-// [MaterialProperty("mainColor", MaterialPropertyFormat.Float4)]
-// public struct MyMaterial : IComponentData
-// {
-//     public float4 Value; 
-// }
