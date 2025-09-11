@@ -23,7 +23,8 @@ public partial struct WaveMoveSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         var elapsedTime = (float)SystemAPI.Time.ElapsedTime;
-
+        //RefRW - read and write data
+        // RefRO - Readonly data
         foreach (var (trans, waveData) in SystemAPI.Query<RefRW<LocalTransform>, RefRO<SinWaveComponent>>())
         {
             var waveMovement = waveData.ValueRO.amplitude * math.sin(elapsedTime * waveData.ValueRO.frequency);
