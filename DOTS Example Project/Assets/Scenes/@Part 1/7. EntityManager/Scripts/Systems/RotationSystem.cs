@@ -26,7 +26,7 @@ public partial struct RotationSystem : ISystem
 
         foreach (var (rot, rotData) in SystemAPI.Query<RefRW<LocalTransform>, RefRO<RotatingData>>().WithNone<StopRotatingTag>().WithAll<RotateTag>())
         {
-            var xRot = quaternion.RotateX( rotData.ValueRO.Value * Mathf.Deg2Rad * dt);
+            var xRot = quaternion.RotateX( rotData.ValueRO.Value *  Mathf.Deg2Rad * dt);
             
             rot.ValueRW.Rotation = math.mul(rot.ValueRO.Rotation, xRot);
         }
