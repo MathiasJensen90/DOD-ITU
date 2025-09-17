@@ -23,6 +23,8 @@ public partial struct ECBStopRotationSystem : ISystem
         float elapsedTime = (float)SystemAPI.Time.ElapsedTime;
         var ecbSingleton = SystemAPI.GetSingleton<ECBSingletonComponent>();
         
+        if (!ecbSingleton.shouldDestroy) return; 
+        
         if (ecbSingleton.SchedulingType == SchedulingType.Run)
         {
             EntityCommandBuffer ecb = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
