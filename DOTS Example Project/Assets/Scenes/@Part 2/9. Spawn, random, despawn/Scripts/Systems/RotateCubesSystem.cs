@@ -17,6 +17,7 @@ partial struct RotateCubesSystem : ISystem
     {
         float dt = SystemAPI.Time.DeltaTime;
         var ecbSingleton = SystemAPI.GetSingleton<ECBSingletonComponent>();
+        if (!ecbSingleton.shouldRotate) return;
 
         if (ecbSingleton.SchedulingType == SchedulingType.Run)
         {
