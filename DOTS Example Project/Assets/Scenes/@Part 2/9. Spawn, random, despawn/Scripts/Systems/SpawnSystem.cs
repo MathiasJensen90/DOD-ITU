@@ -18,12 +18,9 @@ public partial struct SpawnSystem : ISystem
     {
         state.Enabled = false;
         var ecbSingleton = SystemAPI.GetSingleton<ECBSingletonComponent>();
-      
-
+        
         if (ecbSingleton.SchedulingType == SchedulingType.Run)
         {
-            var ECB = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
-                .CreateCommandBuffer(state.WorldUnmanaged);
             int n = ecbSingleton.spawnAmount; 
             for (int i = 0; i < n*n*n ; i++)
             {

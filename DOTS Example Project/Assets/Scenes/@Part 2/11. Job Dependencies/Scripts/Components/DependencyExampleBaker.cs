@@ -8,12 +8,12 @@ class DependencyExampleBaker : MonoBehaviour
         public override void Bake(DependencyExampleBaker authoring)
         {
             var e = GetEntity(TransformUsageFlags.None);
-            AddComponent<JobDepedencySingleton>(e);
+            AddComponent<JobDependencySingleton>(e);
         }
     }
 }
 
-public struct JobDepedencySingleton : IComponentData
+public struct JobDependencySingleton : IComponentData
 {
     
 }

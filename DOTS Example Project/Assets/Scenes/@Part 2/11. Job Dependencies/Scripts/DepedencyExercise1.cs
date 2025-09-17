@@ -1,8 +1,8 @@
 using Unity.Burst;
 using Unity.Collections;
-using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities;
 using Unity.Jobs;
+using Unity.Transforms;
 using UnityEngine;
 
 public partial struct DepedencyExercise1 : ISystem
@@ -10,7 +10,7 @@ public partial struct DepedencyExercise1 : ISystem
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
-        state.RequireForUpdate<JobDepedencySingleton>();
+        state.RequireForUpdate<JobDependencySingleton>();
     }
 
     [BurstCompile]
@@ -21,13 +21,15 @@ public partial struct DepedencyExercise1 : ISystem
 
         var sharedArray = new NativeArray<int>(10, Allocator.TempJob);
         
-        JobHandle incrementJobHandle = state.Dependency = new incrementJob
+        JobHandle incrementJobHandle  = new IncrementJob
         {
             array = sharedArray,
-            valueToSet = 3
+            valueToSet = 7
         }.Schedule(state.Dependency);
+        
+        state.Dependency = incrementJobHandle;
 
-        var secondIncrementJobHandle = new incrementJob
+        var secondIncrementJobHandle = new IncrementJob
         {
             array = sharedArray,
             valueToSet = 2
@@ -45,12 +47,12 @@ public partial struct DepedencyExercise1 : ISystem
 
 
     [BurstCompile]
-    public partial struct incrementJob : IJobEntity
+    public partial struct IncrementJob : IJobEntity
     {
         public NativeArray<int> array;
         public int valueToSet;
 
-        public void Execute()
+        public void Execute(in JobDependencySingleton singleton)
         {
             for (int i = 0; i < array.Length; i++)
             {

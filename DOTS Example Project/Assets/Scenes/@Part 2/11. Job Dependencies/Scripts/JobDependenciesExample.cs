@@ -11,7 +11,7 @@ public partial struct JobDependenciesExample : ISystem
 {
     public void OnCreate(ref SystemState state)
     {
-        state.RequireForUpdate<JobDepedencySingleton>();
+        state.RequireForUpdate<JobDependencySingleton>();
     }
 
     [BurstCompile]
