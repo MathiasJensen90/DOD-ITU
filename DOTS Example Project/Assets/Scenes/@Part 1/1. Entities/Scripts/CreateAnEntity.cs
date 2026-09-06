@@ -9,8 +9,13 @@ public partial struct CreateAnEntity : ISystem
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<EntitiesExampleSingletonTag>();
-        var e = state.EntityManager.CreateEntity(); 
-        state.EntityManager.SetName(e, "myEntity");
+    }
+    
+    public void OnUpdate(ref SystemState state)
+    {
+        var entity = state.EntityManager.CreateEntity();
+        state.EntityManager.SetName(entity, "myEntity");
+        state.Enabled = false;
     }
     
 }

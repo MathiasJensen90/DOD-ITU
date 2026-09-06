@@ -54,9 +54,12 @@ public partial struct EntityManagerComplexSystem: ISystem
                     var entitySpawned = ecb.Instantiate(managersingleton.ValueRO.prefabToSpawn);
                     ecb.SetComponent(entitySpawned, LocalTransform.FromPosition(Random.insideUnitSphere * 2));
                     
-                    //get buffer and add the instantiated entity to it
-                    var buffer = SystemAPI.GetBuffer<ListOfEntitiesCreatedComponent>(entity);
-                    buffer.Add(new ListOfEntitiesCreatedComponent {entity = entitySpawned});
+                    ecb.AppendToBuffer(
+                        entity,
+                        new ListOfEntitiesCreatedComponent
+                        {
+                            entity = entitySpawned
+                        });
                 }
                 else
                 {

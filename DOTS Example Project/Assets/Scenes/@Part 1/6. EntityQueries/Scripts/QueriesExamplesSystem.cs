@@ -36,7 +36,7 @@ public partial struct QueriesExamplesSystem : ISystem
             trans.ValueRW.Rotation = math.mul(trans.ValueRO.Rotation, xRot);
         }
         
-        foreach (var trans in SystemAPI.Query<RefRW<LocalTransform>>().WithAll<TagComponent2>().WithNone<TagComponent1>())
+        foreach (var trans in SystemAPI.Query<RefRW<LocalTransform>>().WithAll<TagComponent2>().WithNone<TagComponent3>())
         {
             var xRot = quaternion.RotateY(80 * Mathf.Deg2Rad * dt);
             trans.ValueRW.Rotation = math.mul(trans.ValueRO.Rotation, xRot);
@@ -52,9 +52,10 @@ public partial struct QueriesExamplesSystem : ISystem
 
 public partial struct MovementJob : IJobEntity
 {
+    public float dt;
     public void Execute(ref LocalTransform trans)
     {
-        trans.Position += new float3(0, 0.001f, 0);
+        trans.Position += new float3(0, 0.004f, 0) * dt;
     }
 }
 

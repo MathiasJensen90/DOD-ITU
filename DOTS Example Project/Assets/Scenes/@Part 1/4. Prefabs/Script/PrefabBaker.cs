@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
 
-public class PrefabConversion : MonoBehaviour
+public class PrefabBaker : MonoBehaviour
 {
     public GameObject prefab; 
-    class baker : Baker<PrefabConversion>
+    class baker : Baker<PrefabBaker>
     {
-        public override void Bake(PrefabConversion authoring)
+        public override void Bake(PrefabBaker authoring)
         {
             var entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponent(entity, new prefabComp
